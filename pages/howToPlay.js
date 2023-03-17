@@ -1,6 +1,4 @@
 import Head from "next/head";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import style from "../styles/howToPlay.module.scss";
 
 const howToPlay = (props) => {
@@ -9,7 +7,6 @@ const howToPlay = (props) => {
       <Head>
         <title>Interview Game: How to Play</title>
       </Head>
-      <Header></Header>
       <div className={style.playbg_image}>
         <div
           className={`${style.jumbotron} jumbotron jumbotron-fluid text-center pt-3 pb-2`}
@@ -73,7 +70,6 @@ const howToPlay = (props) => {
             <a href="/">Now, Let's Play!</a>
           </div>
         </div>
-        <Footer></Footer>
       </div>
     </>
   );
