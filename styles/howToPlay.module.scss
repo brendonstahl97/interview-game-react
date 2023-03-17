@@ -1,0 +1,20 @@
+.playbg_image {
+  background-image: url("https://eventage.net/wp-content/uploads/2018/06/Question-Mark-Background-01.jpg");
+  background-repeat: repeat-y;
+  background-size: contain;
+  background-position: center;
+  height: auto;
+  opacity: 0.8;
+}
+
+.jumbotron {
+  background-color: rgb(51, 50, 50);
+  color: white;
+  opacity: 0.85;
+}
+
+.card {
+    opacity: 0.825;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+}

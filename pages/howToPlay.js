@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Header from "@/components/header";
+import style from "../styles/howToPlay.module.scss";
 
 const howToPlay = (props) => {
   return (
@@ -8,15 +9,17 @@ const howToPlay = (props) => {
         <title>Interview Game: How to Play</title>
       </Head>
       <Header></Header>
-      <div className="playbg_image">
-        <div className="jumbotron jumbotron-fluid text-center pt-3 pb-2">
-          <div className="container">
+      <div className={style.playbg_image}>
+        <div
+          className={`${style.jumbotron} jumbotron jumbotron-fluid text-center pt-3 pb-2`}
+        >
+          <div>
             <h1 className="display-4">How do you play?</h1>
             <p className="lead">The Interview Game</p>
           </div>
         </div>
 
-        <div className="card col-md-6 mx-auto mt-5 mb-5">
+        <div className={`${style.card} card col-md-6 mx-auto mt-5 mb-5`}>
           <div className="card-header text-center">The Rules</div>
           <p className="paragraph m-3">
             Each round, one player is the <strong>Interviewer</strong> and will
@@ -66,9 +69,7 @@ const howToPlay = (props) => {
           </p>
 
           <div className="card-footer text-muted text-center">
-            <a className="playBtn" href="/">
-              Now, Let's Play!
-            </a>
+            <a href="/">Now, Let's Play!</a>
           </div>
         </div>
 
