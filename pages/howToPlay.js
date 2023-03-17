@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 import style from "../styles/howToPlay.module.scss";
 
 const howToPlay = (props) => {
@@ -72,14 +73,7 @@ const howToPlay = (props) => {
             <a href="/">Now, Let's Play!</a>
           </div>
         </div>
-
-        <footer className="sticky-bottom py-3 bg-dark">
-          <div className="container">
-            <p className="m-0 text-center text-white">
-              Copyright &copy; Wonderful Jaguars 2020
-            </p>
-          </div>
-        </footer>
+        <Footer></Footer>
       </div>
     </>
   );
