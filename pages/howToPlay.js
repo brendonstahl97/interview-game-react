@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Header from "@/components/header";
 
 const howToPlay = (props) => {
   return (
@@ -6,15 +7,7 @@ const howToPlay = (props) => {
       <Head>
         <title>Interview Game: How to Play</title>
       </Head>
-      <nav className="nav">
-        <a className="nav-link" aria-current="page" href="/">
-          Let's Play!
-        </a>
-        <a className="nav-link active" href="/how-to-play">
-          Learn How to Play
-        </a>
-      </nav>
-
+      <Header></Header>
       <div className="playbg_image">
         <div className="jumbotron jumbotron-fluid text-center pt-3 pb-2">
           <div className="container">
@@ -52,8 +45,8 @@ const howToPlay = (props) => {
             <li>Interview Phase:</li>
             <ul>
               <li>
-                Each player and is given 60 seconds to give their reasons as to
-                why they deserve the job, while incorporating ALL of the phrases
+                Each player is given 60 seconds to give their reasons as to why
+                they deserve the job, while incorporating ALL of the phrases
                 from their phrase cards.
               </li>
             </ul>
@@ -68,7 +61,7 @@ const howToPlay = (props) => {
           </ol>
 
           <p className="paragraph m-3">
-            NOTE: We recommend using a VOIP service like
+            NOTE: We recommend using a VOIP service like{" "}
             <a href="https://discord.com/">Discord</a> while playing.
           </p>
 

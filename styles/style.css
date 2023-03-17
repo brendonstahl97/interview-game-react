@@ -36,16 +36,6 @@ body {
 
 }
     
-nav {
-    background-color: grey;
-    opacity: 0.825;
-}
-    
-nav a {
-    color: black;
-    font-weight: 800;
-}
-    
 .card {
     opacity: 0.825;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
