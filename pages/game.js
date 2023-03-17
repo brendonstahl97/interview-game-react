@@ -1,4 +1,5 @@
 import SocketWrapper from "@/components/socket-wrapper";
+import style from "@/styles/Game.module.scss";
 
 const Game = () => {
   return (
@@ -10,18 +11,18 @@ const Game = () => {
             <div className="container">
               <div className="row">
                 <div className="col-sm">
-                  <h4 className="roomDisp">Room Number: 1234 </h4>
+                  <h4 className={`${style.jumbo_h4} roomDisp`}>Room Number: 1234 </h4>
                 </div>
                 <div className="col-sm">
-                  <h4 className="jobCard">Job Name: </h4>
+                  <h4 className={`${style.jumbo_h4} jobCard`}>Job Name: </h4>
                 </div>
                 <div className="col-sm">
-                  <h4 className="displayName">Display Name: </h4>
+                  <h4 className={`${style.jumbo_h4} displayName`}>Display Name: </h4>
                 </div>
               </div>
               <div className="row d-flex justify-content-center">
                 <div className="col-md-4 mt-2">
-                  <h4 className="currentInterviewer">Interviewer: </h4>
+                  <h4 className={`${style.jumbo_h4} currentInterviewer`}>Interviewer: </h4>
                 </div>
               </div>
             </div>
@@ -31,7 +32,7 @@ const Game = () => {
         <div className="row d-flex justify-content-center text-center">
           <div className="col-md-2 col-sm-6 pt-4">
             <div className="card mb-3">
-              <h5 className="phaseDisp card-header">Your Points</h5>
+              <h5 className={`${style.phaseDisp} card-header`}>Your Points</h5>
               <div className="card-body">
                 <h5 className="scoreDisp card-title">0</h5>
               </div>

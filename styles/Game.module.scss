@@ -1,0 +1,25 @@
+.jumbo_h4 {
+  color: rgb(252, 252, 33);
+  border-style: solid;
+  border-color: white;
+  border-width: 0.5px;
+  padding: 5px;
+}
+
+.phaseDisp {
+  font-weight: bolder;
+}
+
+.fa-user-times {
+  color: rgb(248, 73, 29);
+}
+
+.fa-user-check {
+  color: rgb(64, 240, 20);
+}
+
+.controlPanel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

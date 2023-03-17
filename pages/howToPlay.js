@@ -1,5 +1,5 @@
 import Head from "next/head";
-import style from "../styles/howToPlay.module.scss";
+import style from "../styles/HowToPlay.module.scss";
 
 const howToPlay = (props) => {
   return (
