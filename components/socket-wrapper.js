@@ -12,12 +12,18 @@ const SocketWrapper = ({ children }) => {
         console.log("connect");
         socket.emit("hello");
       });
+
+      socket.on("connect_error", () => {
+        setTimeout(() => {
+          socket.connect();
+        }, 1000).then(socket.emit("reconnect"));
+      });
+
+      
     });
   }, []);
 
-  return (
-    <>{children}</>
-  )
+  return <>{children}</>;
 };
 
 export default SocketWrapper;
