@@ -1,17 +1,240 @@
-import { useEffect } from "react";
-import io from "socket.io-client";
+import SocketWrapper from "@/components/socket-wrapper";
 
-export default () => {
-  useEffect(() => {
-    fetch("/api/socket").finally(() => {
-      const socket = io();
+const Game = () => {
+  return (
+    <SocketWrapper>
+      <div class="roombg_image col-12">
+        <div class="jumbotron jumbotron-fluid text-center pt-3 pb-2">
+          <div class="container">
+            <h1 class="display-4">The Interview Game</h1>
+            <div class="container">
+              <div class="row">
+                <div class="col-sm">
+                  <h4 class="roomDisp">Room Number: 1234 </h4>
+                </div>
+                <div class="col-sm">
+                  <h4 class="jobCard">Job Name: </h4>
+                </div>
+                <div class="col-sm">
+                  <h4 class="displayName">Display Name: </h4>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-center">
+                <div class="col-md-4 mt-2">
+                  <h4 class="currentInterviewer">Interviewer: </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      socket.on("connect", () => {
-        console.log("connect");
-        socket.emit("hello");
-      });
-    });
-  }, []);
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-md-2 col-sm-6 pt-4">
+            <div class="card mb-3">
+              <h5 class="phaseDisp card-header">Your Points</h5>
+              <div class="card-body">
+                <h5 class="scoreDisp card-title">0</h5>
+              </div>
+            </div>
+          </div>
 
-  return <h1>Socket.io</h1>;
+          <div class="gameStarterDiv col-md-3 col-sm-6 pt-4">
+            <div class="card mb-3 text-center">
+              <h5 class="phaseDisp card-header">Current Phase: 1</h5>
+              <div class="card-body">
+                <h5 class="card-title"></h5>
+                <button href="#" class="readyBtn btn btn-primary mb-3">
+                  Ready
+                </button>
+                <br />
+                <button href="#" class="startBtn btn btn-primary" disabled>
+                  Start Game
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2 col-sm-6 pt-4">
+            <div class="card mb-3">
+              <h5 class="card-header">Current Interviewee</h5>
+              <div class="card-body">
+                <h5 class="currentPlayer card-title"></h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-5 col-sm-8 left-side">
+          <div class="col-md-12 mt-3 mb-3 text-center playerListCard">
+            <div class="card mb-3">
+              <h3 class="phaseDisp card-header">Players:</h3>
+              <div class="card-body playerList"></div>
+            </div>
+          </div>
+
+          <div class="col-md-12 mt-3 mb-3 text-center winnerCard">
+            <div class="card mb-3">
+              <h3 class="phaseDisp card-header">Winner:</h3>
+              <br />
+              <h1 class="winnerNameText">Some guy!</h1>
+              <br />
+
+              <button href="#" class="replaySameCardsBtn btn btn-primary m-3">
+                New Game with Same Cards
+              </button>
+              <button href="#" class="replayReuseCardsBtn btn btn-primary m-3">
+                New Game with New Cards
+              </button>
+            </div>
+          </div>
+
+          <div class="submissions col-md-12 hld mt-3">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Add a Job:</h5>
+                    <form>
+                      <input
+                        type="text"
+                        class="jobInput form-control mb-2"
+                        aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-default"
+                      />
+                      <button
+                        type="submit"
+                        href="#"
+                        class="addJobBtn btn btn-primary"
+                      >
+                        Add Job
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Add a Phrase:</h5>
+                    <form>
+                      <input
+                        type="text"
+                        class="phraseInput form-control mb-2"
+                        aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-default"
+                      />
+                      <button
+                        type="submit"
+                        href="#"
+                        class="addPhraseBtn btn btn-primary"
+                      >
+                        Add Phrase
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="currentCard col-md-12 mt-3 mb-3 text-center">
+            <div class="card">
+              <div class="card-header">
+                <h3>Phrase in Use</h3>
+              </div>
+              <p class="currentCardDisplay mt-3" value="">
+                Phrase 1
+              </p>
+            </div>
+          </div>
+          <div class="hiringList"></div>
+          <div class="cards col-md-12 mb-3 mt-3">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-4">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title phrase1" value="Phrase 1">
+                      Phrase 1
+                    </h5>
+                    <button href="#" class="phraseCard btn btn-primary">
+                      Use Now!
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title phrase2" value="Phrase 2">
+                      Phrase 2
+                    </h5>
+                    <button href="#" class="phraseCard btn btn-primary">
+                      Use Now!
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title phrase3" value="Phrase 3">
+                      Phrase 3
+                    </h5>
+                    <button href="#" class="phraseCard btn btn-primary">
+                      Use Now!
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-3 d-flex justify-content-center">
+                <div class="col-md-4">
+                  <div class="card text-center">
+                    <div class="card-body">
+                      <h5 class="card-title phrase4" value="Phrase 4">
+                        Phrase 4
+                      </h5>
+                      <button href="#" class="phraseCard btn btn-primary">
+                        Use Now!
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card text-center">
+                    <div class="card-body">
+                      <h5 class="card-title phrase5" value="Phrase 5">
+                        Phrase 5
+                      </h5>
+                      <button href="#" class="phraseCard btn btn-primary">
+                        Use Now!
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-3 col-sm-6">
+            <div class="card endTurnDiv text-center mb-3">
+              <div class="card-body">
+                <button href="#" class="endTurn btn btn-primary">
+                  End Turn
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br />
+    </SocketWrapper>
+  );
 };
+
+export default Game;
