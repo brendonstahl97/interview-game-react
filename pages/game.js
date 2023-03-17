@@ -1,12 +1,10 @@
-import GameManagerWrapper from "@/components/game-manager-wrapper";
+import GameInfoCard from "@/components/gameInfoCard/gameInfoCard";
 import GameInfoDisplay from "@/components/gameInfoDisplay/gameInfoDisplay";
 import SocketWrapper from "@/components/socket-wrapper";
-import style from "@/styles/Game.module.scss";
 
 const Game = () => {
   return (
     <SocketWrapper>
-      <GameManagerWrapper>
         <div className="roombg_image col-12">
           <div className="jumbotron jumbotron-fluid text-center pt-3 pb-2">
             <div className="container">
@@ -34,19 +32,14 @@ const Game = () => {
 
           <div className="row d-flex justify-content-center text-center">
             <div className="col-md-2 col-sm-6 pt-4">
-              <div className="card mb-3">
-                <h5 className={`${style.phaseDisp} card-header`}>
-                  Your Points
-                </h5>
-                <div className="card-body">
-                  <h5 className="scoreDisp card-title">0</h5>
-                </div>
-              </div>
+              <GameInfoCard headerText="Your Points" value="0" />
             </div>
 
             <div className="gameStarterDiv col-md-3 col-sm-6 pt-4">
               <div className="card mb-3 text-center">
-                <h5 className="phaseDisp card-header">Current Phase: 1</h5>
+                <h5 className="font-weight-bold card-header">
+                  Current Phase: 1
+                </h5>
                 <div className="card-body">
                   <h5 className="card-title"></h5>
                   <button href="#" className="readyBtn btn btn-primary mb-3">
@@ -65,12 +58,7 @@ const Game = () => {
             </div>
 
             <div className="col-md-2 col-sm-6 pt-4">
-              <div className="card mb-3">
-                <h5 className="card-header">Current Interviewee</h5>
-                <div className="card-body">
-                  <h5 className="currentPlayer card-title"></h5>
-                </div>
-              </div>
+              <GameInfoCard headerText="Current Interviewee" value="" />
             </div>
           </div>
         </div>
@@ -79,14 +67,14 @@ const Game = () => {
           <div className="col-md-5 col-sm-8 left-side">
             <div className="col-md-12 mt-3 mb-3 text-center playerListCard">
               <div className="card mb-3">
-                <h3 className="phaseDisp card-header">Players:</h3>
+                <h3 className="card-header">Players:</h3>
                 <div className="card-body playerList"></div>
               </div>
             </div>
 
             <div className="col-md-12 mt-3 mb-3 text-center winnerCard">
               <div className="card mb-3">
-                <h3 className="phaseDisp card-header">Winner:</h3>
+                <h3 className="font-weight-bold card-header">Winner:</h3>
                 <br />
                 <h1 className="winnerNameText">Some guy!</h1>
                 <br />
@@ -156,14 +144,7 @@ const Game = () => {
             </div>
 
             <div className="currentCard col-md-12 mt-3 mb-3 text-center">
-              <div className="card">
-                <div className="card-header">
-                  <h3>Phrase in Use</h3>
-                </div>
-                <p className="currentCardDisplay mt-3" value="">
-                  Phrase 1
-                </p>
-              </div>
+              <GameInfoCard headerText="Phrase in Use" value="Phrase 1" large/>
             </div>
             <div className="hiringList"></div>
             <div className="cards col-md-12 mb-3 mt-3">
@@ -249,7 +230,6 @@ const Game = () => {
         </div>
 
         <br />
-      </GameManagerWrapper>
     </SocketWrapper>
   );
 };
