@@ -3,6 +3,7 @@ import GameInfoDisplay from "@/components/gameInfoDisplay/gameInfoDisplay";
 import PhaseDisplay from "@/components/phaseDisplay/phaseDisplay";
 import PlayersDisplay from "@/components/phaseDisplay/playersDisplay";
 import SocketWrapper from "@/components/socket-wrapper";
+import WinnerCard from "@/components/winnerCard/winnerCard";
 
 const Game = () => {
   return (
@@ -54,25 +55,7 @@ const Game = () => {
           </div>
 
           <div className="col-md-12 mt-3 mb-3 text-center winnerCard">
-            <div className="card mb-3">
-              <h3 className="font-weight-bold card-header">Winner:</h3>
-              <br />
-              <h1 className="winnerNameText">Some guy!</h1>
-              <br />
-
-              <button
-                href="#"
-                className="replaySameCardsBtn btn btn-primary m-3"
-              >
-                New Game with Same Cards
-              </button>
-              <button
-                href="#"
-                className="replayReuseCardsBtn btn btn-primary m-3"
-              >
-                New Game with New Cards
-              </button>
-            </div>
+            <WinnerCard winnerName="Some Guy!!!" />
           </div>
 
           <div className="submissions col-md-12 hld mt-3">
