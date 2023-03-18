@@ -1,8 +1,11 @@
+import EndTurnCard from "@/components/endTurnCard/endTurnCard";
 import GameInfoCard from "@/components/gameInfoCard/gameInfoCard";
 import GameInfoDisplay from "@/components/gameInfoDisplay/gameInfoDisplay";
 import PhaseDisplay from "@/components/phaseDisplay/phaseDisplay";
 import PlayersDisplay from "@/components/phaseDisplay/playersDisplay";
 import SocketWrapper from "@/components/socket-wrapper";
+import SubmissionCard from "@/components/submissionCard/submissionCard";
+import UsePhraseCard from "@/components/usePhraseCard/usePhraseCard";
 import WinnerCard from "@/components/winnerCard/winnerCard";
 
 const Game = () => {
@@ -61,48 +64,10 @@ const Game = () => {
           <div className="submissions col-md-12 hld mt-3">
             <div className="row">
               <div className="col-sm-6">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Add a Job:</h5>
-                    <form>
-                      <input
-                        type="text"
-                        className="jobInput form-control mb-2"
-                        aria-label="Sizing example input"
-                        aria-describedby="inputGroup-sizing-default"
-                      />
-                      <button
-                        type="submit"
-                        href="#"
-                        className="addJobBtn btn btn-primary"
-                      >
-                        Add Job
-                      </button>
-                    </form>
-                  </div>
-                </div>
+                <SubmissionCard phrase />
               </div>
               <div className="col-sm-6">
-                <div className="card">
-                  <div className="card-body">
-                    <h5 className="card-title">Add a Phrase:</h5>
-                    <form>
-                      <input
-                        type="text"
-                        className="phraseInput form-control mb-2"
-                        aria-label="Sizing example input"
-                        aria-describedby="inputGroup-sizing-default"
-                      />
-                      <button
-                        type="submit"
-                        href="#"
-                        className="addPhraseBtn btn btn-primary"
-                      >
-                        Add Phrase
-                      </button>
-                    </form>
-                  </div>
-                </div>
+                <SubmissionCard />
               </div>
             </div>
           </div>
@@ -114,66 +79,21 @@ const Game = () => {
           <div className="cards col-md-12 mb-3 mt-3">
             <div className="row d-flex justify-content-center">
               <div className="col-md-4">
-                <div className="card text-center">
-                  <div className="card-body">
-                    <h5 className="card-title phrase1" value="Phrase 1">
-                      Phrase 1
-                    </h5>
-                    <button href="#" className="phraseCard btn btn-primary">
-                      Use Now!
-                    </button>
-                  </div>
-                </div>
+                <UsePhraseCard phrase="Phrase 1" />
               </div>
               <div className="col-md-4">
-                <div className="card text-center">
-                  <div className="card-body">
-                    <h5 className="card-title phrase2" value="Phrase 2">
-                      Phrase 2
-                    </h5>
-                    <button href="#" className="phraseCard btn btn-primary">
-                      Use Now!
-                    </button>
-                  </div>
-                </div>
+                <UsePhraseCard phrase="Phrase 2" />
               </div>
               <div className="col-md-4">
-                <div className="card text-center">
-                  <div className="card-body">
-                    <h5 className="card-title phrase3" value="Phrase 3">
-                      Phrase 3
-                    </h5>
-                    <button href="#" className="phraseCard btn btn-primary">
-                      Use Now!
-                    </button>
-                  </div>
-                </div>
+                <UsePhraseCard phrase="Phrase 3" />
               </div>
 
               <div className="row mt-3 d-flex justify-content-center">
                 <div className="col-md-4">
-                  <div className="card text-center">
-                    <div className="card-body">
-                      <h5 className="card-title phrase4" value="Phrase 4">
-                        Phrase 4
-                      </h5>
-                      <button href="#" className="phraseCard btn btn-primary">
-                        Use Now!
-                      </button>
-                    </div>
-                  </div>
+                  <UsePhraseCard phrase="Phrase 4" />
                 </div>
                 <div className="col-md-4">
-                  <div className="card text-center">
-                    <div className="card-body">
-                      <h5 className="card-title phrase5" value="Phrase 5">
-                        Phrase 5
-                      </h5>
-                      <button href="#" className="phraseCard btn btn-primary">
-                        Use Now!
-                      </button>
-                    </div>
-                  </div>
+                  <UsePhraseCard phrase="Phrase 5" />
                 </div>
               </div>
             </div>
@@ -182,13 +102,7 @@ const Game = () => {
 
         <div className="row d-flex justify-content-center">
           <div className="col-md-3 col-sm-6">
-            <div className="card endTurnDiv text-center mb-3">
-              <div className="card-body">
-                <button href="#" className="endTurn btn btn-primary">
-                  End Turn
-                </button>
-              </div>
-            </div>
+            <EndTurnCard />
           </div>
         </div>
       </div>
