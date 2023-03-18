@@ -1,6 +1,7 @@
 import GameInfoCard from "@/components/gameInfoCard/gameInfoCard";
 import GameInfoDisplay from "@/components/gameInfoDisplay/gameInfoDisplay";
 import PhaseDisplay from "@/components/phaseDisplay/phaseDisplay";
+import PlayersDisplay from "@/components/phaseDisplay/playersDisplay";
 import SocketWrapper from "@/components/socket-wrapper";
 
 const Game = () => {
@@ -49,10 +50,7 @@ const Game = () => {
       <div className="row d-flex justify-content-center">
         <div className="col-md-5 col-sm-8 left-side">
           <div className="col-md-12 mt-3 mb-3 text-center playerListCard">
-            <div className="card mb-3">
-              <h3 className="card-header">Players:</h3>
-              <div className="card-body playerList"></div>
-            </div>
+            <PlayersDisplay></PlayersDisplay>
           </div>
 
           <div className="col-md-12 mt-3 mb-3 text-center winnerCard">
