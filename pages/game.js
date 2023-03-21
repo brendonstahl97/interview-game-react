@@ -7,8 +7,11 @@ import SocketWrapper from "@/components/socket-wrapper";
 import SubmissionCard from "@/components/submissionCard/submissionCard";
 import UsePhraseCard from "@/components/usePhraseCard/usePhraseCard";
 import WinnerCard from "@/components/winnerCard/winnerCard";
+import GamePhaseCheck from "@/components/gamePhaseCheck/gamePhaseCheck";
+import { useState } from "react";
 
 const Game = () => {
+  const [currentPhase, setCurrentPhase] = useState("Employment Phase");
   return (
     <SocketWrapper>
       <div className="roombg_image col-12">
@@ -40,10 +43,14 @@ const Game = () => {
           <div className="col-md-2 col-sm-6 pt-4">
             <GameInfoCard headerText="Your Points" value="0" />
           </div>
-
-          <div className="gameStarterDiv col-md-3 col-sm-6 pt-4">
-            <PhaseDisplay />
-          </div>
+          <GamePhaseCheck
+            currentPhase={currentPhase}
+            allowedPhases={["Setup Phase"]}
+          >
+            <div className="gameStarterDiv col-md-3 col-sm-6 pt-4">
+              <PhaseDisplay />
+            </div>
+          </GamePhaseCheck>
 
           <div className="col-md-2 col-sm-6 pt-4">
             <GameInfoCard headerText="Current Interviewee" value="" />
@@ -53,58 +60,95 @@ const Game = () => {
 
       <div className="row d-flex justify-content-center">
         <div className="col-md-5 col-sm-8 left-side">
-          <div className="col-md-12 mt-3 mb-3 text-center playerListCard">
-            <PlayersDisplay></PlayersDisplay>
-          </div>
-
-          <div className="col-md-12 mt-3 mb-3 text-center winnerCard">
-            <WinnerCard winnerName="Some Guy!!!" />
-          </div>
-
-          <div className="submissions col-md-12 hld mt-3">
-            <div className="row">
-              <div className="col-sm-6">
-                <SubmissionCard phrase />
-              </div>
-              <div className="col-sm-6">
-                <SubmissionCard />
-              </div>
+          <GamePhaseCheck
+            currentPhase={currentPhase}
+            allowedPhases={["Setup Phase"]}
+          >
+            <div className="col-md-12 mt-3 mb-3 text-center playerListCard">
+              <PlayersDisplay></PlayersDisplay>
             </div>
-          </div>
+          </GamePhaseCheck>
 
-          <div className="currentCard col-md-12 mt-3 mb-3 text-center">
-            <GameInfoCard headerText="Phrase in Use" value="Phrase 1" large />
-          </div>
-          <div className="hiringList"></div>
-          <div className="cards col-md-12 mb-3 mt-3">
-            <div className="row d-flex justify-content-center">
-              <div className="col-md-4">
-                <UsePhraseCard phrase="Phrase 1" />
-              </div>
-              <div className="col-md-4">
-                <UsePhraseCard phrase="Phrase 2" />
-              </div>
-              <div className="col-md-4">
-                <UsePhraseCard phrase="Phrase 3" />
-              </div>
+          <GamePhaseCheck
+            currentPhase={currentPhase}
+            allowedPhases={["Winner Phase"]}
+          >
+            <div className="col-md-12 mt-3 mb-3 text-center winnerCard">
+              <WinnerCard winnerName="Some Guy!!!" />
+            </div>
+          </GamePhaseCheck>
 
-              <div className="row mt-3 d-flex justify-content-center">
-                <div className="col-md-4">
-                  <UsePhraseCard phrase="Phrase 4" />
+          <GamePhaseCheck
+            currentPhase={currentPhase}
+            allowedPhases={["Submission Phase"]}
+          >
+            <div className="submissions col-md-12 hld mt-3">
+              <div className="row">
+                <div className="col-sm-6">
+                  <SubmissionCard phrase />
                 </div>
-                <div className="col-md-4">
-                  <UsePhraseCard phrase="Phrase 5" />
+                <div className="col-sm-6">
+                  <SubmissionCard />
                 </div>
               </div>
             </div>
-          </div>
+          </GamePhaseCheck>
+
+          <GamePhaseCheck
+            currentPhase={currentPhase}
+            allowedPhases={["Interview Phase"]}
+          >
+            <div className="currentCard col-md-12 mt-3 mb-3 text-center">
+              <GameInfoCard headerText="Phrase in Use" value="Phrase 1" large />
+            </div>
+          </GamePhaseCheck>
+
+          <GamePhaseCheck
+            currentPhase={currentPhase}
+            allowedPhases={["Employment Phase"]}
+          >
+            <div className="hiringList">Hiring List Placeholder</div>
+          </GamePhaseCheck>
+
+          <GamePhaseCheck
+            currentPhase={currentPhase}
+            allowedPhases={["Interview Phase"]}
+          >
+            <div className="cards col-md-12 mb-3 mt-3">
+              <div className="row d-flex justify-content-center">
+                <div className="col-md-4">
+                  <UsePhraseCard phrase="Phrase 1" />
+                </div>
+                <div className="col-md-4">
+                  <UsePhraseCard phrase="Phrase 2" />
+                </div>
+                <div className="col-md-4">
+                  <UsePhraseCard phrase="Phrase 3" />
+                </div>
+
+                <div className="row mt-3 d-flex justify-content-center">
+                  <div className="col-md-4">
+                    <UsePhraseCard phrase="Phrase 4" />
+                  </div>
+                  <div className="col-md-4">
+                    <UsePhraseCard phrase="Phrase 5" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </GamePhaseCheck>
         </div>
 
-        <div className="row d-flex justify-content-center">
-          <div className="col-md-3 col-sm-6">
-            <EndTurnCard />
+        <GamePhaseCheck
+          currentPhase={currentPhase}
+          allowedPhases={["Interview Phase"]}
+        >
+          <div className="row d-flex justify-content-center">
+            <div className="col-md-3 col-sm-6">
+              <EndTurnCard />
+            </div>
           </div>
-        </div>
+        </GamePhaseCheck>
       </div>
 
       <br />
