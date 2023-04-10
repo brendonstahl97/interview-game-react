@@ -1,15 +1,24 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import style from "../styles/Landing.module.scss";
 import Head from "next/head";
 import Link from "next/link";
+import { socket } from "@/components/context/socket-wrapper";
 import { useAppContext } from "@/components/context/AppContext";
 
 const Landing = (props) => {
-  const { dispatch } = useAppContext();
+  const { state, dispatch } = useAppContext();
   const [displayName, setDisplayName] = useState("");
+  const router = useRouter();
 
-  const handleNewGame = () => {
-    dispatch({type: "SET_DISPLAY_NAME", value: displayName});
+  const handleNewGame = (e) => {
+    e.preventDefault();
+    dispatch({ type: "SET_DISPLAY_NAME", value: displayName });
+
+    socket.emit("newUser", {
+      DisplayName: displayName,
+      RoomNum: "",
+    });
   };
 
   return (
@@ -42,9 +51,13 @@ const Landing = (props) => {
             />
 
             <p className="option m-3 mx-auto">1. Start a new game!</p>
-            <Link href="/game" className="hostBtn btn btn-primary mt-2" onClick={handleNewGame}>
+            <a
+              href="#"
+              className="hostBtn btn btn-primary mt-2"
+              onClick={handleNewGame}
+            >
               Host Room
-            </Link>
+            </a>
 
             <p className="option m-3 mx-auto">
               2. Enter a room # to join an existing game!

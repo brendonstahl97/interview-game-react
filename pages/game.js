@@ -7,9 +7,12 @@ import SubmissionCard from "@/components/submissionCard/submissionCard";
 import UsePhraseCard from "@/components/usePhraseCard/usePhraseCard";
 import WinnerCard from "@/components/winnerCard/winnerCard";
 import GamePhaseCheck from "@/components/gamePhaseCheck/gamePhaseCheck";
-import { useState } from "react";
+import { socket } from "@/components/context/socket-wrapper";
+import { useEffect, useState } from "react";
+import { useAppContext } from "@/components/context/AppContext";
 
 const Game = () => {
+  const { state, dispatch } = useAppContext();
   const [currentPhase, setCurrentPhase] = useState("Setup Phase");
   return (
     <>

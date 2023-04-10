@@ -23,8 +23,6 @@ const AppWrapper = ({ children }) => {
     }
   }, []);
 
-  console.log(state);
-
   useEffect(() => {
     if (state !== initialState) {
       // Update state in local storage

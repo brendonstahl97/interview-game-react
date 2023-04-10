@@ -7,7 +7,7 @@ import "@/styles/style.css";
 import Head from "next/head";
 import Header from "@/components/header/header";
 import Footer from "../components/footer/footer";
-import SocketWrapper from "@/components/socket-wrapper";
+import SocketWrapper from "@/components/context/socket-wrapper";
 import AppWrapper from "@/components/context/AppContext";
 
 export default function App({ Component, pageProps }) {
