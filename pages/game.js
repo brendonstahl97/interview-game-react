@@ -3,7 +3,6 @@ import GameInfoCard from "@/components/gameInfoCard/gameInfoCard";
 import GameInfoDisplay from "@/components/gameInfoDisplay/gameInfoDisplay";
 import PhaseDisplay from "@/components/phaseDisplay/phaseDisplay";
 import PlayersDisplay from "@/components/phaseDisplay/playersDisplay";
-import SocketWrapper from "@/components/socket-wrapper";
 import SubmissionCard from "@/components/submissionCard/submissionCard";
 import UsePhraseCard from "@/components/usePhraseCard/usePhraseCard";
 import WinnerCard from "@/components/winnerCard/winnerCard";
@@ -11,9 +10,9 @@ import GamePhaseCheck from "@/components/gamePhaseCheck/gamePhaseCheck";
 import { useState } from "react";
 
 const Game = () => {
-  const [currentPhase, setCurrentPhase] = useState("Employment Phase");
+  const [currentPhase, setCurrentPhase] = useState("Setup Phase");
   return (
-    <SocketWrapper>
+    <>
       <div className="roombg_image col-12">
         <div className="jumbotron jumbotron-fluid text-center pt-3 pb-2">
           <div className="container">
@@ -152,7 +151,7 @@ const Game = () => {
       </div>
 
       <br />
-    </SocketWrapper>
+    </>
   );
 };
 

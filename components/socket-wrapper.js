@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { io } from "socket.io-client";
 
-export let socket = null;
+export let socket = io();
 
 const SocketWrapper = ({ children }) => {
   useEffect(() => {
     fetch("/api/socket").finally(() => {
-      socket = io();
 
       socket.on("connect", () => {
         console.log("connect");
@@ -19,7 +18,6 @@ const SocketWrapper = ({ children }) => {
         }, 1000).then(socket.emit("reconnect"));
       });
 
-      
     });
   }, []);
 

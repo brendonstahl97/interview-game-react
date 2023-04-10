@@ -1,7 +1,17 @@
+import { useState } from "react";
 import style from "../styles/Landing.module.scss";
 import Head from "next/head";
+import Link from "next/link";
+import { useAppContext } from "@/components/context/AppContext";
 
 const Landing = (props) => {
+  const { dispatch } = useAppContext();
+  const [displayName, setDisplayName] = useState("");
+
+  const handleNewGame = () => {
+    dispatch({type: "SET_DISPLAY_NAME", value: displayName});
+  };
+
   return (
     <>
       <Head>
@@ -27,12 +37,14 @@ const Landing = (props) => {
               aria-label="Chat Room #"
               aria-describedby="basic-addon2"
               style={{ width: 10 + "rem" }}
+              onChange={(e) => setDisplayName(e.target.value)}
+              value={displayName}
             />
 
             <p className="option m-3 mx-auto">1. Start a new game!</p>
-            <a href="#" className="hostBtn btn btn-primary mt-2">
+            <Link href="/game" className="hostBtn btn btn-primary mt-2" onClick={handleNewGame}>
               Host Room
-            </a>
+            </Link>
 
             <p className="option m-3 mx-auto">
               2. Enter a room # to join an existing game!
