@@ -7,13 +7,11 @@ import SubmissionCard from "@/components/submissionCard/submissionCard";
 import UsePhraseCard from "@/components/usePhraseCard/usePhraseCard";
 import WinnerCard from "@/components/winnerCard/winnerCard";
 import GamePhaseCheck from "@/components/gamePhaseCheck/gamePhaseCheck";
-import { socket } from "@/components/context/socket-wrapper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppContext } from "@/components/context/AppContext";
 
 const Game = () => {
-  const { state, dispatch } = useAppContext();
-  const [currentPhase, setCurrentPhase] = useState("Setup Phase");
+  const { state } = useAppContext();
   return (
     <>
       <div className="roombg_image col-12">
@@ -23,13 +21,13 @@ const Game = () => {
             <div className="container">
               <div className="row">
                 <div className="col-sm">
-                  <GameInfoDisplay baseText={"Room Number"} value={"1234"} />
+                  <GameInfoDisplay baseText={"Room Number"} value={state.RoomNumber} />
                 </div>
                 <div className="col-sm">
                   <GameInfoDisplay baseText={"Job Name"} value={""} />
                 </div>
                 <div className="col-sm">
-                  <GameInfoDisplay baseText={"Display Name"} value={""} />
+                  <GameInfoDisplay baseText={"Display Name"} value={state.PlayerData.name} />
                 </div>
               </div>
               <div className="row d-flex justify-content-center">
@@ -43,10 +41,10 @@ const Game = () => {
 
         <div className="row d-flex justify-content-center text-center">
           <div className="col-md-2 col-sm-6 pt-4">
-            <GameInfoCard headerText="Your Points" value="0" />
+            <GameInfoCard headerText="Your Points" value={state.PlayerData.points} />
           </div>
           <GamePhaseCheck
-            currentPhase={currentPhase}
+            currentPhase={state.CurrentPhase}
             allowedPhases={["Setup Phase"]}
           >
             <div className="gameStarterDiv col-md-3 col-sm-6 pt-4">
@@ -63,7 +61,7 @@ const Game = () => {
       <div className="row d-flex justify-content-center">
         <div className="col-md-5 col-sm-8 left-side">
           <GamePhaseCheck
-            currentPhase={currentPhase}
+            currentPhase={state.CurrentPhase}
             allowedPhases={["Setup Phase"]}
           >
             <div className="col-md-12 mt-3 mb-3 text-center playerListCard">
@@ -72,7 +70,7 @@ const Game = () => {
           </GamePhaseCheck>
 
           <GamePhaseCheck
-            currentPhase={currentPhase}
+            currentPhase={state.CurrentPhase}
             allowedPhases={["Winner Phase"]}
           >
             <div className="col-md-12 mt-3 mb-3 text-center winnerCard">
@@ -81,7 +79,7 @@ const Game = () => {
           </GamePhaseCheck>
 
           <GamePhaseCheck
-            currentPhase={currentPhase}
+            currentPhase={state.CurrentPhase}
             allowedPhases={["Submission Phase"]}
           >
             <div className="submissions col-md-12 hld mt-3">
@@ -97,7 +95,7 @@ const Game = () => {
           </GamePhaseCheck>
 
           <GamePhaseCheck
-            currentPhase={currentPhase}
+            currentPhase={state.CurrentPhase}
             allowedPhases={["Interview Phase"]}
           >
             <div className="currentCard col-md-12 mt-3 mb-3 text-center">
@@ -106,14 +104,14 @@ const Game = () => {
           </GamePhaseCheck>
 
           <GamePhaseCheck
-            currentPhase={currentPhase}
+            currentPhase={state.CurrentPhase}
             allowedPhases={["Employment Phase"]}
           >
             <div className="hiringList">Hiring List Placeholder</div>
           </GamePhaseCheck>
 
           <GamePhaseCheck
-            currentPhase={currentPhase}
+            currentPhase={state.CurrentPhase}
             allowedPhases={["Interview Phase"]}
           >
             <div className="cards col-md-12 mb-3 mt-3">
@@ -142,7 +140,7 @@ const Game = () => {
         </div>
 
         <GamePhaseCheck
-          currentPhase={currentPhase}
+          currentPhase={state.CurrentPhase}
           allowedPhases={["Interview Phase"]}
         >
           <div className="row d-flex justify-content-center">

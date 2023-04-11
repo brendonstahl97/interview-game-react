@@ -1,6 +1,7 @@
 export const initialState = {
   Socket: null,
   RoomNumber: "",
+  CurrentPhase: "",
   PlayerData: {
     socketId: "",
     name: "",
@@ -30,6 +31,12 @@ export const AppReducer = (state, action) => {
       return {
         ...state,
         Socket: action.value,
+      };
+
+    case "SET_GAME_PHASE":
+      return {
+        ...state,
+        CurrentPhase: action.value,
       };
 
     case "REPLACE_STATE":
