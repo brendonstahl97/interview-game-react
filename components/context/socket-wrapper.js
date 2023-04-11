@@ -35,6 +35,10 @@ const SocketWrapper = ({ children }) => {
       socket.on("updatePlayerList", (readyPlayerData) => {
         dispatch({ type: "SET_READY_PLAYER_DATA", value: readyPlayerData });
       });
+
+      socket.on("setCanStart", (canStart) => {
+        dispatch({ type: "SET_CAN_START", value: canStart });
+      });
     });
   }, []);
 

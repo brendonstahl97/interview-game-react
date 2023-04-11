@@ -2,6 +2,7 @@ export const initialState = {
   Socket: null,
   RoomNumber: "",
   CurrentPhase: "",
+  CanStart: false,
   ReadyPlayerData: [{ displayName: "Test", ready: false }],
   PlayerData: {
     socketId: "",
@@ -44,6 +45,12 @@ export const AppReducer = (state, action) => {
       return {
         ...state,
         CurrentPhase: action.value,
+      };
+
+    case "SET_CAN_START":
+      return {
+        ...state,
+        CanStart: action.value,
       };
 
     case "REPLACE_STATE":

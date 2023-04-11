@@ -36,16 +36,23 @@ const handler = (req, res) => {
       io.to(addedPlayer.socketId).emit("updatePlayerData", addedPlayer);
       io.to(addedPlayer.socketId).emit("setGamePhase", "Setup Phase");
 
-      console.log(room);
       const playerReadyData = Game.updatePlayerList(room, Games);
       io.to(room).emit("updatePlayerList", playerReadyData);
     });
 
     socket.on("toggleReady", (roomNumber) => {
-      Game.toggleReady(roomNumber, socket, Games);
+      const gameOfToggledPlayer = Game.toggleReady(roomNumber, socket, Games);
 
       const playerReadyData = Game.updatePlayerList(roomNumber, Games);
       io.to(roomNumber).emit("updatePlayerList", playerReadyData);
+
+      if (
+        Game.checkStartEligibility(gameOfToggledPlayer) !=
+        gameOfToggledPlayer.canStart
+      ) {
+        gameOfToggledPlayer.canStart = !gameOfToggledPlayer.canStart;
+        io.to(roomNumber).emit("setCanStart", gameOfToggledPlayer.canStart);
+      }
     });
   });
 
