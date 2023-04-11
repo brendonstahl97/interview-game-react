@@ -21,9 +21,12 @@ const SocketWrapper = ({ children }) => {
       });
 
       socket.on("updateRoomData", (room) => {
-        console.log(room);
-        dispatch({ type: SET_ROOM_NUMBER, value: room });
+        dispatch({ type: "SET_ROOM_NUMBER", value: room });
       });
+
+      socket.on("updatePlayerData", (newPlayerData) => {
+        dispatch({ type: "SET_PLAYER_DATA", value: newPlayerData });
+      })
     });
   }, []);
 

@@ -16,14 +16,19 @@ const handler = (req, res) => {
   res.socket.server.io = io;
 
   io.on("connection", (socket) => {
-    console.log("connect");
+
     socket.on("newUser", ({ DisplayName, RoomNum }) => {
       let room = RoomNum;
+
       if (room === "") {
         room = utils.generateRoomNum(Games);
       }
+
       socket.join(room);
-      socket.to(room).emit("updateRoomData", room);
+      console.log(room);
+      const addedPlayer = utils.AddPlayerToGame(Games, socket, RoomNum, DisplayName);
+      io.to(addedPlayer.socketId).emit("updateRoomData", room);
+      io.to(addedPlayer.socketId).emit("updatePlayerData", addedPlayer);
     });
   });
 

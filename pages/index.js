@@ -2,23 +2,38 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import style from "../styles/Landing.module.scss";
 import Head from "next/head";
-import Link from "next/link";
 import { socket } from "@/components/context/socket-wrapper";
-import { useAppContext } from "@/components/context/AppContext";
 
 const Landing = (props) => {
-  const { state, dispatch } = useAppContext();
-  const [displayName, setDisplayName] = useState("");
+  const [inputState, setInputState] = useState({
+    displayName: "",
+    roomNumToJoin: "",
+  });
+
   const router = useRouter();
 
-  const handleNewGame = (e) => {
+  const handleEnterGame = (e, isHost) => {
     e.preventDefault();
-    dispatch({ type: "SET_DISPLAY_NAME", value: displayName });
+
+    // Temp Error Handling
+    if (inputState.displayName.length == 0) {
+      if (isHost) {
+        alert("Please Enter a Display Name");
+        return;
+      } else if (inputState.roomNumToJoin.length == 0) {
+        alert("Please enter a Display Name and a Room Number to join");
+        return;
+      }
+    }
+
+    const room = isHost ? "" : inputState.roomNumToJoin;
 
     socket.emit("newUser", {
-      DisplayName: displayName,
-      RoomNum: "",
+      DisplayName: inputState.displayName,
+      RoomNum: room,
     });
+
+    router.push("/game");
   };
 
   return (
@@ -46,31 +61,48 @@ const Landing = (props) => {
               aria-label="Chat Room #"
               aria-describedby="basic-addon2"
               style={{ width: 10 + "rem" }}
-              onChange={(e) => setDisplayName(e.target.value)}
-              value={displayName}
+              onChange={(e) =>
+                setInputState({
+                  ...inputState,
+                  displayName: e.target.value,
+                })
+              }
+              value={inputState.displayName}
             />
 
             <p className="option m-3 mx-auto">1. Start a new game!</p>
             <a
               href="#"
               className="hostBtn btn btn-primary mt-2"
-              onClick={handleNewGame}
+              onClick={(e) => handleEnterGame(e, true)}
             >
               Host Room
             </a>
+            <br />
+            <br />
+            <p>or</p>
 
             <p className="option m-3 mx-auto">
-              2. Enter a room # to join an existing game!
+              2. Enter a room number to join an existing game!
             </p>
             <input
               type="text"
               className="roomNumInput form-control mx-auto text-center m-2"
-              placeholder="Room #"
-              aria-label="Chat Room #"
-              aria-describedby="basic-addon2"
+              placeholder="Room Number"
               style={{ width: 10 + "rem" }}
+              onChange={(e) => {
+                setInputState({
+                  ...inputState,
+                  roomNumToJoin: e.target.value,
+                });
+              }}
+              value={inputState.roomNumToJoin}
             />
-            <a href="#" className="joinBtn btn btn-primary">
+            <a
+              href="#"
+              className="joinBtn btn btn-primary"
+              onClick={(e) => handleEnterGame(e, false)}
+            >
               Join Room
             </a>
           </div>
