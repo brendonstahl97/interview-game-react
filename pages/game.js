@@ -2,7 +2,7 @@ import EndTurnCard from "@/components/endTurnCard/endTurnCard";
 import GameInfoCard from "@/components/gameInfoCard/gameInfoCard";
 import GameInfoDisplay from "@/components/gameInfoDisplay/gameInfoDisplay";
 import PhaseDisplay from "@/components/phaseDisplay/phaseDisplay";
-import PlayersDisplay from "@/components/phaseDisplay/playersDisplay";
+import PlayersDisplay from "@/components/playersDisplay/playersDisplay";
 import SubmissionCard from "@/components/submissionCard/submissionCard";
 import UsePhraseCard from "@/components/usePhraseCard/usePhraseCard";
 import WinnerCard from "@/components/winnerCard/winnerCard";

@@ -26,11 +26,18 @@ const handler = (req, res) => {
 
       socket.join(room);
 
-      const addedPlayer = utils.AddPlayerToGame(Games, socket, RoomNum, DisplayName);
-      
+      const addedPlayer = utils.AddPlayerToGame(Games, socket, room, DisplayName);
+
       io.to(addedPlayer.socketId).emit("updateRoomData", room);
       io.to(addedPlayer.socketId).emit("updatePlayerData", addedPlayer);
       io.to(addedPlayer.socketId).emit("setGamePhase", "Setup Phase");
+    });
+
+    socket.on("toggleReady", (roomNumber) => {
+        Game.toggleReady(roomNumber, socket, Games);
+
+        const playerReadyData = Game.updatePlayerList(roomNumber, Games);
+        io.to(roomNumber).emit("updatePlayerList", playerReadyData);
     });
   });
 
