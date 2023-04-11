@@ -29,8 +29,8 @@ const Landing = (props) => {
     const room = isHost ? "" : inputState.roomNumToJoin;
 
     socket.emit("newUser", {
-      DisplayName: inputState.displayName,
-      RoomNum: room,
+      displayName: inputState.displayName,
+      roomNumber: room,
     });
 
     router.push("/game");

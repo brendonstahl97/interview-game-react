@@ -31,6 +31,10 @@ const SocketWrapper = ({ children }) => {
       socket.on("setGamePhase", (newPhase) => {
         dispatch({ type: "SET_GAME_PHASE", value: newPhase });
       });
+
+      socket.on("updatePlayerList", (readyPlayerData) => {
+        dispatch({ type: "SET_READY_PLAYER_DATA", value: readyPlayerData });
+      });
     });
   }, []);
 

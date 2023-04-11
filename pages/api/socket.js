@@ -10,15 +10,14 @@ const handler = (req, res) => {
     res.end();
     return;
   }
-  
+
   console.log("Socket is initializing");
   const io = new Server(res.socket.server);
   res.socket.server.io = io;
 
   io.on("connection", (socket) => {
-
-    socket.on("newUser", ({ DisplayName, RoomNum }) => {
-      let room = RoomNum;
+    socket.on("newUser", ({ displayName, roomNumber }) => {
+      let room = roomNumber;
 
       if (room === "") {
         room = utils.generateRoomNum(Games);
@@ -26,18 +25,27 @@ const handler = (req, res) => {
 
       socket.join(room);
 
-      const addedPlayer = utils.AddPlayerToGame(Games, socket, room, DisplayName);
+      const addedPlayer = utils.AddPlayerToGame(
+        Games,
+        socket,
+        room,
+        displayName
+      );
 
       io.to(addedPlayer.socketId).emit("updateRoomData", room);
       io.to(addedPlayer.socketId).emit("updatePlayerData", addedPlayer);
       io.to(addedPlayer.socketId).emit("setGamePhase", "Setup Phase");
+
+      console.log(room);
+      const playerReadyData = Game.updatePlayerList(room, Games);
+      io.to(room).emit("updatePlayerList", playerReadyData);
     });
 
     socket.on("toggleReady", (roomNumber) => {
-        Game.toggleReady(roomNumber, socket, Games);
+      Game.toggleReady(roomNumber, socket, Games);
 
-        const playerReadyData = Game.updatePlayerList(roomNumber, Games);
-        io.to(roomNumber).emit("updatePlayerList", playerReadyData);
+      const playerReadyData = Game.updatePlayerList(roomNumber, Games);
+      io.to(roomNumber).emit("updatePlayerList", playerReadyData);
     });
   });
 
