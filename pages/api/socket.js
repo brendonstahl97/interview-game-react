@@ -54,6 +54,10 @@ const handler = (req, res) => {
         io.to(roomNumber).emit("setCanStart", gameOfToggledPlayer.canStart);
       }
     });
+
+    socket.on("startGame", (roomNumber) => {
+        io.to(roomNumber).emit("setGamePhase", "Submission Phase");
+    })
   });
 
   res.end();

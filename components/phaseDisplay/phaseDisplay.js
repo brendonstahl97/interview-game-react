@@ -9,6 +9,11 @@ const PhaseDisplay = () => {
     socket.emit("toggleReady", state.RoomNumber);
   };
 
+  const handleStartClick = (e) => {
+    e.preventDefault();
+    socket.emit("startGame", state.RoomNumber);
+  }
+
   return (
     <div className="card mb-3 text-center">
       <h5 className="font-weight-bold card-header">Current Phase: 1</h5>
@@ -25,6 +30,7 @@ const PhaseDisplay = () => {
         <button
           href="#"
           className="startBtn btn btn-primary"
+          onClick={handleStartClick}
           disabled={!state.CanStart}
         >
           Start Game
