@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
-import Game from "@/lib/game";
-import utils from "@/lib/utils";
+import { updatePlayerList, toggleReady, checkStartEligibility } from "@/lib/game";
+import { generateRoomNum, AddPlayerToGame } from "@/lib/utils";
 
 const Games = [];
 
@@ -16,16 +16,16 @@ const handler = (req, res) => {
   res.socket.server.io = io;
 
   io.on("connection", (socket) => {
-    socket.on("newUser", ({ displayName, roomNumber }) => {
+    socket.on("newUser", async ({ displayName, roomNumber }) => {
       let room = roomNumber;
 
       if (room === "") {
-        room = utils.generateRoomNum(Games);
+        room = generateRoomNum(Games);
       }
 
       socket.join(room);
 
-      const addedPlayer = utils.AddPlayerToGame(
+      const addedPlayer = AddPlayerToGame(
         Games,
         socket,
         room,
@@ -36,18 +36,18 @@ const handler = (req, res) => {
       io.to(addedPlayer.socketId).emit("updatePlayerData", addedPlayer);
       io.to(addedPlayer.socketId).emit("setGamePhase", "Setup Phase");
 
-      const playerReadyData = Game.updatePlayerList(room, Games);
+      const playerReadyData = updatePlayerList(room, Games);
       io.to(room).emit("updatePlayerList", playerReadyData);
     });
 
     socket.on("toggleReady", (roomNumber) => {
-      const gameOfToggledPlayer = Game.toggleReady(roomNumber, socket, Games);
+      const gameOfToggledPlayer = toggleReady(roomNumber, socket, Games);
 
-      const playerReadyData = Game.updatePlayerList(roomNumber, Games);
+      const playerReadyData = updatePlayerList(roomNumber, Games);
       io.to(roomNumber).emit("updatePlayerList", playerReadyData);
 
       if (
-        Game.checkStartEligibility(gameOfToggledPlayer) !=
+        checkStartEligibility(gameOfToggledPlayer) !=
         gameOfToggledPlayer.canStart
       ) {
         gameOfToggledPlayer.canStart = !gameOfToggledPlayer.canStart;
@@ -56,8 +56,8 @@ const handler = (req, res) => {
     });
 
     socket.on("startGame", (roomNumber) => {
-        io.to(roomNumber).emit("setGamePhase", "Submission Phase");
-    })
+      io.to(roomNumber).emit("setGamePhase", "Submission Phase");
+    });
   });
 
   res.end();
