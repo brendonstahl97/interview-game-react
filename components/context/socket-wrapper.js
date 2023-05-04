@@ -30,6 +30,10 @@ const SocketWrapper = ({ children }) => {
 
       socket.on("setGamePhase", (newPhase) => {
         dispatch({ type: "SET_GAME_PHASE", value: newPhase });
+        if (newPhase == "Submission Phase") {
+            localStorage.removeItem("phraseCards");
+            localStorage.removeItem("jobCards");
+        }
       });
 
       socket.on("updatePlayerList", (readyPlayerData) => {

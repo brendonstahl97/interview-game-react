@@ -3,7 +3,7 @@ import GameInfoCard from "@/components/gameInfoCard/gameInfoCard";
 import GameInfoDisplay from "@/components/gameInfoDisplay/gameInfoDisplay";
 import PhaseDisplay from "@/components/phaseDisplay/phaseDisplay";
 import PlayersDisplay from "@/components/playersDisplay/playersDisplay";
-import SubmissionCard from "@/components/submissionCard/submissionCard";
+import SubmissionSection from "@/components/sumbissionSection/SubmissionSection";
 import UsePhraseCard from "@/components/usePhraseCard/usePhraseCard";
 import WinnerCard from "@/components/winnerCard/winnerCard";
 import GamePhaseCheck from "@/components/gamePhaseCheck/gamePhaseCheck";
@@ -86,16 +86,7 @@ const Game = () => {
           </GamePhaseCheck>
 
           <GamePhaseCheck allowedPhases={["Submission Phase"]}>
-            <div className="submissions col-md-12 hld mt-3">
-              <div className="row">
-                <div className="col-sm-6">
-                  <SubmissionCard phrase />
-                </div>
-                <div className="col-sm-6">
-                  <SubmissionCard />
-                </div>
-              </div>
-            </div>
+            <SubmissionSection />
           </GamePhaseCheck>
 
           <GamePhaseCheck allowedPhases={["Interview Phase"]}>
