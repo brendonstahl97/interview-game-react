@@ -33,3 +33,4 @@ yarn-error.log*
 
 # pocketbase
 /pb_data
+/pb_data/*
