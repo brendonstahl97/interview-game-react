@@ -12,23 +12,23 @@ const AppContext = createContext();
 const AppWrapper = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
-  useEffect(() => {
-    // Check if state already exists in local storage
-    if (!localStorage["state"]) {
-      // If yes, replace current state with local storage
-      dispatch({
-        type: "REPLACE_STATE",
-        value: JSON.parse(localStorage.getItem("state")),
-      });
-    }
-  }, []);
+//   useEffect(() => {
+//     // Check if state already exists in local storage
+//     if (!localStorage["state"]) {
+//       // If yes, replace current state with local storage
+//       dispatch({
+//         type: "REPLACE_STATE",
+//         value: JSON.parse(localStorage.getItem("state")),
+//       });
+//     }
+//   }, []);
 
-  useEffect(() => {
-    if (state !== initialState) {
-      // Update state in local storage
-      localStorage.setItem("state", JSON.stringify(state));
-    }
-  }, [state]);
+//   useEffect(() => {
+//     if (state !== initialState) {
+//       // Update state in local storage
+//       localStorage.setItem("state", JSON.stringify(state));
+//     }
+//   }, [state]);
 
   const contextValue = useMemo(() => {
     return { state, dispatch };

@@ -1,8 +1,28 @@
 import { Server } from "socket.io";
-import { updatePlayerList, toggleReady, checkStartEligibility } from "@/lib/game";
-import { generateRoomNum, AddPlayerToGame } from "@/lib/utils";
+import {
+  updatePlayerList,
+  toggleReady,
+  checkStartEligibility,
+  setupDefaultCards,
+} from "@/lib/game";
+import {
+  generateRoomNum,
+  AddPlayerToGame,
+  SetupDefaultCards,
+  getJobCards,
+  getPhraseCards,
+} from "@/lib/utils";
 
 const Games = [];
+let DefaultJobCards = [];
+let DefaultPhraseCards = [];
+
+const GetDefaultCards = async () => {
+  DefaultJobCards = await getJobCards();
+  DefaultPhraseCards = await getPhraseCards();
+};
+
+GetDefaultCards();
 
 const handler = (req, res) => {
   if (res.socket.server.io) {
@@ -25,12 +45,7 @@ const handler = (req, res) => {
 
       socket.join(room);
 
-      const addedPlayer = AddPlayerToGame(
-        Games,
-        socket,
-        room,
-        displayName
-      );
+      const addedPlayer = AddPlayerToGame(Games, socket, room, displayName);
 
       io.to(addedPlayer.socketId).emit("updateRoomData", room);
       io.to(addedPlayer.socketId).emit("updatePlayerData", addedPlayer);
@@ -56,6 +71,7 @@ const handler = (req, res) => {
     });
 
     socket.on("startGame", (roomNumber) => {
+      setupDefaultCards(roomNumber, Games, DefaultPhraseCards, DefaultJobCards);
       io.to(roomNumber).emit("setGamePhase", "Submission Phase");
     });
   });
