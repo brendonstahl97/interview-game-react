@@ -4,6 +4,7 @@ import {
   toggleReady,
   checkStartEligibility,
   setupDefaultCards,
+  submitPlayerCards,
 } from "@/lib/game";
 import {
   generateRoomNum,
@@ -72,6 +73,10 @@ const handler = (req, res) => {
     socket.on("startGame", (roomNumber) => {
       setupDefaultCards(roomNumber, Games, DefaultPhraseCards, DefaultJobCards);
       io.to(roomNumber).emit("setGamePhase", "Submission Phase");
+    });
+
+    socket.on("submitPlayerCards", ({ roomNumber, jobs, phrases }) => {
+        submitPlayerCards(roomNumber, Games, phrases, jobs);
     });
   });
 

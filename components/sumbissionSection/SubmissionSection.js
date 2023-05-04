@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { socket } from "../context/socket-wrapper";
 import { useAppContext } from "../context/AppContext";
 import SubmissionCard from "../submissionCard/submissionCard";
 
@@ -15,6 +16,20 @@ const SubmissionSection = () => {
     phrase: 0,
   });
 
+  useEffect(() => {
+    if (
+      submittedCards.job == requiredCards.current.job &&
+      submittedCards.phrase == requiredCards.current.phrase
+    ) {
+      const data = {
+        roomNumber: state.RoomNumber,
+        jobs: JSON.parse(localStorage.getItem("jobCards")),
+        phrases: JSON.parse(localStorage.getItem("phraseCards")),
+      };
+      socket.emit("submitPlayerCards", data);
+    }
+  }, [submittedCards]);
+
   const SubmitCard = (value, isPhraseCard) => {
     let cards;
     const storageItem = isPhraseCard ? "phraseCards" : "jobCards";
@@ -30,7 +45,6 @@ const SubmissionSection = () => {
       });
       return;
     }
-
     setSubmittedCards({
       ...submittedCards,
       job: submittedCards.job + 1,
@@ -41,10 +55,19 @@ const SubmissionSection = () => {
     <div className="submissions col-md-12 hld mt-3">
       <div className="row">
         <div className="col-sm-6">
-          <SubmissionCard SubmitCard={SubmitCard} submitQuotaMet={requiredCards.current.phrase == submittedCards.phrase} phrase />
+          <SubmissionCard
+            SubmitCard={SubmitCard}
+            submitQuotaMet={
+              requiredCards.current.phrase == submittedCards.phrase
+            }
+            phrase
+          />
         </div>
         <div className="col-sm-6">
-          <SubmissionCard SubmitCard={SubmitCard} submitQuotaMet={requiredCards.current.job == submittedCards.job} />
+          <SubmissionCard
+            SubmitCard={SubmitCard}
+            submitQuotaMet={requiredCards.current.job == submittedCards.job}
+          />
         </div>
       </div>
     </div>
