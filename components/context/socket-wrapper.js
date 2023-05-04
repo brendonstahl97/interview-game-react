@@ -5,7 +5,7 @@ import { useAppContext } from "./AppContext";
 export let socket;
 
 const SocketWrapper = ({ children }) => {
-  const { state, dispatch } = useAppContext();
+  const { dispatch } = useAppContext();
 
   useEffect(() => {
     fetch("/api/socket").finally(() => {
