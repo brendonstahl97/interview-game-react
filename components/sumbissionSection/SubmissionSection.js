@@ -22,6 +22,7 @@ const SubmissionSection = () => {
       submittedCards.phrase == requiredCards.current.phrase
     ) {
       const data = {
+        socketId: socket.id,
         roomNumber: state.RoomNumber,
         jobs: JSON.parse(localStorage.getItem("jobCards")),
         phrases: JSON.parse(localStorage.getItem("phraseCards")),

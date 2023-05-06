@@ -75,8 +75,8 @@ const handler = (req, res) => {
       io.to(roomNumber).emit("setGamePhase", "Submission Phase");
     });
 
-    socket.on("submitPlayerCards", ({ roomNumber, jobs, phrases }) => {
-        submitPlayerCards(roomNumber, Games, phrases, jobs);
+    socket.on("submitPlayerCards", ({ socketId, roomNumber, jobs, phrases }) => {
+        submitPlayerCards(socketId, roomNumber, Games, phrases, jobs);
     });
   });
 
