@@ -6,6 +6,7 @@ import {
   setupDefaultCards,
   submitPlayerCards,
   checkAllPlayersSubmitted,
+  resetHasInterviewed,
 } from "@/lib/game";
 import {
   generateRoomNum,
@@ -85,7 +86,9 @@ const handler = (req, res) => {
 
         shuffle(gameSubmittedTo.jobCards);
         shuffle(gameSubmittedTo.phraseCards);
-
+        resetHasInterviewed(gameSubmittedTo);
+        
+        io.to(roomNumber).emit("updateCurrentInterviewer", gameSubmittedTo.players.find(player => player.interviewer == true).name);
         io.to(roomNumber).emit("updateCurrentJob", gameSubmittedTo.jobCards[gameSubmittedTo.jobCardIndex]);
         io.to(roomNumber).emit("setGamePhase", "Deal Phase");
     });
