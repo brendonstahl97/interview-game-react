@@ -5,6 +5,7 @@ import {
   checkStartEligibility,
   setupDefaultCards,
   submitPlayerCards,
+  checkAllPlayersSubmitted,
 } from "@/lib/game";
 import {
   generateRoomNum,
@@ -76,7 +77,12 @@ const handler = (req, res) => {
     });
 
     socket.on("submitPlayerCards", ({ socketId, roomNumber, jobs, phrases }) => {
-        submitPlayerCards(socketId, roomNumber, Games, phrases, jobs);
+        const gameSubmittedTo = submitPlayerCards(socketId, roomNumber, Games, phrases, jobs);
+        const allPlayersSubmitted = checkAllPlayersSubmitted(gameSubmittedTo);
+
+        if (!allPlayersSubmitted) return;
+
+        io.to(roomNumber).emit("setGamePhase", "Deal Phase");
     });
   });
 
