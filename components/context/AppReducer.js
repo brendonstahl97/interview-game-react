@@ -3,13 +3,14 @@ export const initialState = {
   RoomNumber: "",
   CurrentPhase: "",
   CanStart: false,
+  CurrentInterviewer: "",
+  CurrentJob: "",
   ReadyPlayerData: [{ displayName: "Test", ready: false }],
   PlayerData: {
     socketId: "",
     name: "",
     interviewer: false,
     interviewee: false,
-    hasInterviewed: false,
     points: 0,
     phraseCards: [],
   },
@@ -51,6 +52,18 @@ export const AppReducer = (state, action) => {
       return {
         ...state,
         CanStart: action.value,
+      };
+
+    case "SET_CURRENT_INTERVIEWER":
+      return {
+        ...state,
+        CurrentInterviewer: action.value,
+      };
+
+    case "SET_CURRENT_JOB":
+      return {
+        ...state,
+        CurrentJob: action.value,
       };
 
     case "REPLACE_STATE":

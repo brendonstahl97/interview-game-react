@@ -85,8 +85,8 @@ const handler = (req, res) => {
 
         shuffle(gameSubmittedTo.jobCards);
         shuffle(gameSubmittedTo.phraseCards);
-        console.log(gameSubmittedTo.phraseCards[0]);
 
+        io.to(roomNumber).emit("updateCurrentJob", gameSubmittedTo.jobCards[gameSubmittedTo.jobCardIndex]);
         io.to(roomNumber).emit("setGamePhase", "Deal Phase");
     });
   });

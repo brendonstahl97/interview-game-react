@@ -31,8 +31,8 @@ const SocketWrapper = ({ children }) => {
       socket.on("setGamePhase", (newPhase) => {
         dispatch({ type: "SET_GAME_PHASE", value: newPhase });
         if (newPhase == "Submission Phase") {
-            localStorage.removeItem("phraseCards");
-            localStorage.removeItem("jobCards");
+          localStorage.removeItem("phraseCards");
+          localStorage.removeItem("jobCards");
         }
       });
 
@@ -42,6 +42,14 @@ const SocketWrapper = ({ children }) => {
 
       socket.on("setCanStart", (canStart) => {
         dispatch({ type: "SET_CAN_START", value: canStart });
+      });
+
+      socket.on("updateCurrentInterviewer", (interviewerName) => {
+        dispatch({ type: "SET_CURRENT_INTERVIEWER", value: interviewerName });
+      });
+
+      socket.on("updateCurrentJob", (jobTitle) => {
+        dispatch({ type: "SET_CURRENT_JOB", value: jobTitle });
       });
     });
   }, []);

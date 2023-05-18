@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import style from "../styles/Landing.module.scss";
 import Head from "next/head";
 import { socket } from "@/components/context/socket-wrapper";
+import { useAppContext } from "@/components/context/AppContext";
 
 const Landing = (props) => {
+  const { dispatch } = useAppContext();
   const [inputState, setInputState] = useState({
     displayName: "",
     roomNumToJoin: "",
@@ -32,6 +34,8 @@ const Landing = (props) => {
       displayName: inputState.displayName,
       roomNumber: room,
     });
+
+    dispatch({ type: "SET_CURRENT_JOB", value: ""});
 
     router.push("/game");
   };
