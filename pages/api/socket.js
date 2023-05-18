@@ -12,6 +12,7 @@ import {
   AddPlayerToGame,
   getJobCards,
   getPhraseCards,
+  shuffle,
 } from "@/lib/utils";
 
 const Games = [];
@@ -81,6 +82,10 @@ const handler = (req, res) => {
         const allPlayersSubmitted = checkAllPlayersSubmitted(gameSubmittedTo);
 
         if (!allPlayersSubmitted) return;
+
+        shuffle(gameSubmittedTo.jobCards);
+        shuffle(gameSubmittedTo.phraseCards);
+        console.log(gameSubmittedTo.phraseCards[0]);
 
         io.to(roomNumber).emit("setGamePhase", "Deal Phase");
     });

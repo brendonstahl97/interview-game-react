@@ -10,8 +10,8 @@ export const initialState = {
     interviewer: false,
     interviewee: false,
     hasInterviewed: false,
-    ready: false,
     points: 0,
+    phraseCards: [],
   },
 };
 
