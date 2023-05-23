@@ -48,6 +48,10 @@ const SocketWrapper = ({ children }) => {
         dispatch({ type: "SET_CURRENT_INTERVIEWER", value: interviewerName });
       });
 
+      socket.on("setCurrentInterviewee", (intervieweeName) => {
+        dispatch({ type: "SET_CURRENT_INTERVIEWEE", value: intervieweeName})
+      });
+
       socket.on("updateCurrentJob", (jobTitle) => {
         dispatch({ type: "SET_CURRENT_JOB", value: jobTitle });
       });

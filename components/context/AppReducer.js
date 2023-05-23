@@ -4,6 +4,7 @@ export const initialState = {
   CurrentPhase: "",
   CanStart: false,
   CurrentInterviewer: "",
+  CurrentInterviewee: "",
   CurrentJob: "",
   ReadyPlayerData: [{ displayName: "Test", ready: false }],
   PlayerData: {
@@ -58,6 +59,12 @@ export const AppReducer = (state, action) => {
       return {
         ...state,
         CurrentInterviewer: action.value,
+      };
+
+    case "SET_CURRENT_INTERVIEWEE":
+      return {
+        ...state,
+        CurrentInterviewee: action.value,
       };
 
     case "SET_CURRENT_JOB":
