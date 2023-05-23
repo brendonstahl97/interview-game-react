@@ -8,6 +8,8 @@ import {
   checkAllPlayersSubmitted,
   resetHasInterviewed,
   changeInterviewee,
+  drawJobCard,
+  drawPhraseCards,
 } from "@/lib/game";
 import {
   generateRoomNum,
@@ -20,13 +22,14 @@ import {
 const Games = [];
 let DefaultJobCards = [];
 let DefaultPhraseCards = [];
+const cardsPerPlayer = 5;
 
 const GetDefaultCards = async () => {
   DefaultJobCards = await getJobCards();
   DefaultPhraseCards = await getPhraseCards();
 };
 
-GetDefaultCards();
+// GetDefaultCards();
 
 const handler = (req, res) => {
   if (res.socket.server.io) {
@@ -90,10 +93,17 @@ const handler = (req, res) => {
         resetHasInterviewed(gameSubmittedTo);
         
         io.to(roomNumber).emit("updateCurrentInterviewer", gameSubmittedTo.players.find(player => player.interviewer == true).name);
-        io.to(roomNumber).emit("updateCurrentJob", gameSubmittedTo.jobCards[gameSubmittedTo.jobCardIndex]);
         io.to(roomNumber).emit("setGamePhase", "Deal Phase");
 
         // Deal Phase Stuff
+        const jobCard = drawJobCard(gameSubmittedTo);
+        io.to(roomNumber).emit("updateCurrentJob", jobCard);
+
+        const phraseCards = drawPhraseCards(gameSubmittedTo, cardsPerPlayer);
+        gameSubmittedTo.players.forEach((player, i) => {
+            io.to(player.socketId).emit("setPhraseCards", phraseCards[i]);
+        });
+
         const newInterviewee = changeInterviewee(gameSubmittedTo);
         io.to(roomNumber).emit("setCurrentInterviewee", newInterviewee.name);
         io.to(roomNumber).emit("setGamePhase", "Interview Phase");

@@ -103,21 +103,21 @@ const Game = () => {
             <div className="cards col-md-12 mb-3 mt-3">
               <div className="row d-flex justify-content-center">
                 <div className="col-md-4">
-                  <UsePhraseCard phrase="Phrase 1" />
+                  <UsePhraseCard phrase={state.PlayerData.phraseCards[0]} />
                 </div>
                 <div className="col-md-4">
-                  <UsePhraseCard phrase="Phrase 2" />
+                  <UsePhraseCard phrase={state.PlayerData.phraseCards[1]} />
                 </div>
                 <div className="col-md-4">
-                  <UsePhraseCard phrase="Phrase 3" />
+                  <UsePhraseCard phrase={state.PlayerData.phraseCards[2]} />
                 </div>
 
                 <div className="row mt-3 d-flex justify-content-center">
                   <div className="col-md-4">
-                    <UsePhraseCard phrase="Phrase 4" />
+                    <UsePhraseCard phrase={state.PlayerData.phraseCards[3]} />
                   </div>
                   <div className="col-md-4">
-                    <UsePhraseCard phrase="Phrase 5" />
+                    <UsePhraseCard phrase={state.PlayerData.phraseCards[4]} />
                   </div>
                 </div>
               </div>

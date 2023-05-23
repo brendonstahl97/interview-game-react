@@ -55,6 +55,10 @@ const SocketWrapper = ({ children }) => {
       socket.on("updateCurrentJob", (jobTitle) => {
         dispatch({ type: "SET_CURRENT_JOB", value: jobTitle });
       });
+
+      socket.on("setPhraseCards", (phraseCards) => {
+        dispatch({ type: "SET_PLAYER_PHRASE_CARDS", value: phraseCards });
+      });
     });
   }, []);
 

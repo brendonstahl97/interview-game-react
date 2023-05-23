@@ -12,6 +12,9 @@ export const initialState = {
     name: "",
     interviewer: false,
     interviewee: false,
+    hasInterviewed: false,
+    ready: false,
+    hasSubmittedCards: false,
     points: 0,
     phraseCards: [],
   },
@@ -53,6 +56,15 @@ export const AppReducer = (state, action) => {
       return {
         ...state,
         CanStart: action.value,
+      };
+
+    case "SET_PLAYER_PHRASE_CARDS":
+      return {
+        ...state,
+        PlayerData: {
+          ...state.PlayerData,
+          phraseCards: action.value,
+        },
       };
 
     case "SET_CURRENT_INTERVIEWER":
