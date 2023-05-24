@@ -29,7 +29,7 @@ const GetDefaultCards = async () => {
   DefaultPhraseCards = await getPhraseCards();
 };
 
-// GetDefaultCards();
+GetDefaultCards();
 
 const handler = (req, res) => {
   if (res.socket.server.io) {

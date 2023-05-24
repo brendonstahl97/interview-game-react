@@ -8,7 +8,7 @@ const SubmissionSection = () => {
 
   const requiredCards = useRef({
     job: state.ReadyPlayerData.length,
-    phrase: state.ReadyPlayerData.length,
+    phrase: state.ReadyPlayerData.length * 2,
   });
 
   const [submittedCards, setSubmittedCards] = useState({
