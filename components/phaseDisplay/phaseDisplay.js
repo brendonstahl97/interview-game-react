@@ -1,4 +1,4 @@
-import { socket } from "../context/socket-wrapper";
+import { socket } from "../context/SocketWrapper";
 import { useAppContext } from "../context/AppContext";
 
 const PhaseDisplay = () => {

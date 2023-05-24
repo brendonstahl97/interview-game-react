@@ -82,8 +82,16 @@ const handler = (req, res) => {
       io.to(roomNumber).emit("setGamePhase", "Submission Phase");
     });
 
-    socket.on("submitPlayerCards", ({ socketId, roomNumber, jobs, phrases }) => {
-        const gameSubmittedTo = submitPlayerCards(socketId, roomNumber, Games, phrases, jobs);
+    socket.on(
+      "submitPlayerCards",
+      ({ socketId, roomNumber, jobs, phrases }) => {
+        const gameSubmittedTo = submitPlayerCards(
+          socketId,
+          roomNumber,
+          Games,
+          phrases,
+          jobs
+        );
         const allPlayersSubmitted = checkAllPlayersSubmitted(gameSubmittedTo);
 
         if (!allPlayersSubmitted) return;
@@ -91,8 +99,12 @@ const handler = (req, res) => {
         shuffle(gameSubmittedTo.jobCards);
         shuffle(gameSubmittedTo.phraseCards);
         resetHasInterviewed(gameSubmittedTo);
-        
-        io.to(roomNumber).emit("updateCurrentInterviewer", gameSubmittedTo.players.find(player => player.interviewer == true).name);
+
+        io.to(roomNumber).emit(
+          "updateCurrentInterviewer",
+          gameSubmittedTo.players.find((player) => player.interviewer == true)
+            .name
+        );
         io.to(roomNumber).emit("setGamePhase", "Deal Phase");
 
         // Deal Phase Stuff
@@ -100,13 +112,20 @@ const handler = (req, res) => {
         io.to(roomNumber).emit("updateCurrentJob", jobCard);
 
         const phraseCards = drawPhraseCards(gameSubmittedTo, cardsPerPlayer);
+        const newInterviewee = changeInterviewee(gameSubmittedTo);
+
         gameSubmittedTo.players.forEach((player, i) => {
-            io.to(player.socketId).emit("setPhraseCards", phraseCards[i]);
+          player.phraseCards = phraseCards[i];
+          io.to(player.socketId).emit("updatePlayerData", player);
         });
 
-        const newInterviewee = changeInterviewee(gameSubmittedTo);
         io.to(roomNumber).emit("setCurrentInterviewee", newInterviewee.name);
         io.to(roomNumber).emit("setGamePhase", "Interview Phase");
+      }
+    );
+
+    socket.on("playCard", ({ cardText, roomNumber }) => {
+      io.to(roomNumber).emit("cardPlayed", cardText);
     });
   });
 

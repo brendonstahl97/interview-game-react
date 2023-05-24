@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import style from "../styles/Landing.module.scss";
 import Head from "next/head";
-import { socket } from "@/components/context/socket-wrapper";
+import { socket } from "@/components/context/SocketWrapper";
 import { useAppContext } from "@/components/context/AppContext";
 
 const Landing = (props) => {

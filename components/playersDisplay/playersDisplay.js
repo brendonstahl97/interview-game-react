@@ -1,4 +1,4 @@
-import ReadyPlayerDisplay from "../readyPlayerDisplay/readyPlayerDisplay";
+import ReadyPlayerDisplay from "../ReadyPlayerDisplay/ReadyPlayerDisplay";
 import { useAppContext } from "../context/AppContext";
 
 const PlayersDisplay = () => {

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { socket } from "../context/socket-wrapper";
+import { socket } from "../context/SocketWrapper";
 import { useAppContext } from "../context/AppContext";
-import SubmissionCard from "../submissionCard/submissionCard";
+import SubmissionCard from "../SubmissionCard/SubmissionCard";
 
 const SubmissionSection = () => {
   const { state } = useAppContext();

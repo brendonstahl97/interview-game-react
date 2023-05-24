@@ -1,13 +1,13 @@
-import EndTurnCard from "@/components/endTurnCard/endTurnCard";
-import GameInfoCard from "@/components/gameInfoCard/gameInfoCard";
-import GameInfoDisplay from "@/components/gameInfoDisplay/gameInfoDisplay";
-import PhaseDisplay from "@/components/phaseDisplay/phaseDisplay";
-import PlayersDisplay from "@/components/playersDisplay/playersDisplay";
-import SubmissionSection from "@/components/sumbissionSection/SubmissionSection";
-import UsePhraseCard from "@/components/usePhraseCard/usePhraseCard";
-import WinnerCard from "@/components/winnerCard/winnerCard";
-import GamePhaseCheck from "@/components/gamePhaseCheck/gamePhaseCheck";
+import EndTurnCard from "@/components/EndTurnCard/EndTurnCard";
+import GameInfoCard from "@/components/GameInfoCard/GameInfoCard";
+import GameInfoDisplay from "@/components/GameInfoDisplay/GameInfoDisplay";
+import PhaseDisplay from "@/components/PhaseDisplay/PhaseDisplay";
+import PlayersDisplay from "@/components/PlayersDisplay/PlayersDisplay";
+import SubmissionSection from "@/components/SumbissionSection/SubmissionSection";
+import WinnerCard from "@/components/WinnerCard/winnerCard";
+import GamePhaseCheck from "@/components/GamePhaseCheck/GamePhaseCheck";
 import { useAppContext } from "@/components/context/AppContext";
+import PhraseCardDisplay from "@/components/PhraseCardDisplay/PhraseCardDisplay";
 
 const Game = () => {
   const { state } = useAppContext();
@@ -91,7 +91,7 @@ const Game = () => {
 
           <GamePhaseCheck allowedPhases={["Interview Phase"]}>
             <div className="currentCard col-md-12 mt-3 mb-3 text-center">
-              <GameInfoCard headerText="Phrase in Use" value="Phrase 1" large />
+              <GameInfoCard headerText="Phrase in Use" value={state.CurrentPhrase} large />
             </div>
           </GamePhaseCheck>
 
@@ -100,28 +100,7 @@ const Game = () => {
           </GamePhaseCheck>
 
           <GamePhaseCheck allowedPhases={["Interview Phase"]}>
-            <div className="cards col-md-12 mb-3 mt-3">
-              <div className="row d-flex justify-content-center">
-                <div className="col-md-4">
-                  <UsePhraseCard phrase={state.PlayerData.phraseCards[0]} />
-                </div>
-                <div className="col-md-4">
-                  <UsePhraseCard phrase={state.PlayerData.phraseCards[1]} />
-                </div>
-                <div className="col-md-4">
-                  <UsePhraseCard phrase={state.PlayerData.phraseCards[2]} />
-                </div>
-
-                <div className="row mt-3 d-flex justify-content-center">
-                  <div className="col-md-4">
-                    <UsePhraseCard phrase={state.PlayerData.phraseCards[3]} />
-                  </div>
-                  <div className="col-md-4">
-                    <UsePhraseCard phrase={state.PlayerData.phraseCards[4]} />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <PhraseCardDisplay />
           </GamePhaseCheck>
         </div>
 

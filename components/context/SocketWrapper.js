@@ -49,7 +49,7 @@ const SocketWrapper = ({ children }) => {
       });
 
       socket.on("setCurrentInterviewee", (intervieweeName) => {
-        dispatch({ type: "SET_CURRENT_INTERVIEWEE", value: intervieweeName})
+        dispatch({ type: "SET_CURRENT_INTERVIEWEE", value: intervieweeName });
       });
 
       socket.on("updateCurrentJob", (jobTitle) => {
@@ -58,6 +58,10 @@ const SocketWrapper = ({ children }) => {
 
       socket.on("setPhraseCards", (phraseCards) => {
         dispatch({ type: "SET_PLAYER_PHRASE_CARDS", value: phraseCards });
+      });
+
+      socket.on("cardPlayed", (cardText) => {
+        dispatch({ type: "SET_CURRENT_PHRASE", value: cardText });
       });
     });
   }, []);

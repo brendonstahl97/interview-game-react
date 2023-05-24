@@ -2,6 +2,7 @@ export const initialState = {
   Socket: null,
   RoomNumber: "",
   CurrentPhase: "",
+  CurrentPhrase: "",
   CanStart: false,
   CurrentInterviewer: "",
   CurrentInterviewee: "",
@@ -83,6 +84,12 @@ export const AppReducer = (state, action) => {
       return {
         ...state,
         CurrentJob: action.value,
+      };
+
+    case "SET_CURRENT_PHRASE":
+      return {
+        ...state,
+        CurrentPhrase: action.value,
       };
 
     case "REPLACE_STATE":
