@@ -1,12 +1,14 @@
 import { socket } from "../context/SocketWrapper";
 import { useAppContext } from "../context/AppContext";
 
-const UsePhraseCard = ({ phrase }) => {
+const UsePhraseCard = ({ phrase, increaseCardsPlayed }) => {
   const { state } = useAppContext();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     socket.emit("playCard", { cardText: phrase, roomNumber: state.RoomNumber });
+    e.target.disabled = true;
+    increaseCardsPlayed();
   };
 
   return (

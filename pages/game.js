@@ -4,7 +4,7 @@ import GameInfoDisplay from "@/components/GameInfoDisplay/GameInfoDisplay";
 import PhaseDisplay from "@/components/PhaseDisplay/PhaseDisplay";
 import PlayersDisplay from "@/components/PlayersDisplay/PlayersDisplay";
 import SubmissionSection from "@/components/SumbissionSection/SubmissionSection";
-import WinnerCard from "@/components/WinnerCard/winnerCard";
+import WinnerCard from "@/components/WinnerCard/WinnerCard";
 import GamePhaseCheck from "@/components/GamePhaseCheck/GamePhaseCheck";
 import { useAppContext } from "@/components/context/AppContext";
 import PhraseCardDisplay from "@/components/PhraseCardDisplay/PhraseCardDisplay";
@@ -103,14 +103,6 @@ const Game = () => {
             <PhraseCardDisplay />
           </GamePhaseCheck>
         </div>
-
-        <GamePhaseCheck allowedPhases={["Interview Phase"]}>
-          <div className="row d-flex justify-content-center">
-            <div className="col-md-3 col-sm-6">
-              <EndTurnCard />
-            </div>
-          </div>
-        </GamePhaseCheck>
       </div>
 
       <br />
