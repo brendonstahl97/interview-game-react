@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { socket } from "../context/SocketWrapper";
 import UsePhraseCard from "../UsePhraseCard/UsePhraseCard";
 import EndTurnCard from "../EndTurnCard/EndTurnCard";
 import { useAppContext } from "../context/AppContext";
@@ -9,6 +10,13 @@ const PhraseCardDisplay = () => {
 
   const incrementCardsPlayedCount = () => {
     setCardsPlayedCount(cardsPlayedCount + 1);
+  };
+
+  const handleEndTurn = (e) => {
+    e.preventDefault();
+    if (cardsPlayedCount < state.PlayerData.phraseCards.length) return;
+
+    socket.emit("turnEnded", { roomNumber: state.RoomNumber })
   };
 
   if (state.PlayerData.interviewee) {
@@ -51,10 +59,10 @@ const PhraseCardDisplay = () => {
             </div>
           </div>
         </div>
-        {cardsPlayedCount.current >= state.PlayerData.phraseCards.length && (
+        {cardsPlayedCount >= state.PlayerData.phraseCards.length && (
           <div className="row d-flex justify-content-center">
             <div className="col-md-3 col-sm-6">
-              <EndTurnCard />
+              <EndTurnCard handleEndTurn={handleEndTurn}/>
             </div>
           </div>
         )}

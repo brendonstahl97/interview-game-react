@@ -7,9 +7,9 @@ import {
   submitPlayerCards,
   checkAllPlayersSubmitted,
   resetHasInterviewed,
-  changeInterviewee,
   drawJobCard,
   drawPhraseCards,
+  nextInterviewee,
 } from "@/lib/game";
 import {
   generateRoomNum,
@@ -17,6 +17,7 @@ import {
   getJobCards,
   getPhraseCards,
   shuffle,
+  getGameIndex,
 } from "@/lib/utils";
 
 const Games = [];
@@ -112,7 +113,7 @@ const handler = (req, res) => {
         io.to(roomNumber).emit("updateCurrentJob", jobCard);
 
         const phraseCards = drawPhraseCards(gameSubmittedTo, cardsPerPlayer);
-        const newInterviewee = changeInterviewee(gameSubmittedTo);
+        const newInterviewee = nextInterviewee(gameSubmittedTo);
 
         gameSubmittedTo.players.forEach((player, i) => {
           player.phraseCards = phraseCards[i];
@@ -126,6 +127,23 @@ const handler = (req, res) => {
 
     socket.on("playCard", ({ cardText, roomNumber }) => {
       io.to(roomNumber).emit("cardPlayed", cardText);
+    });
+
+    socket.on("turnEnded", ({ roomNumber }) => {
+      const game = Games[getGameIndex(roomNumber, Games)];
+      const newInterviewee = nextInterviewee(game);
+
+      game.players.forEach((player) => {
+        io.to(player.socketId).emit("updatePlayerData", player);
+      });
+
+      io.to(roomNumber).emit("cardPlayed", "");
+
+      if (!newInterviewee) {
+        io.to(roomNumber).emit("setGamePhase", "Employment Phase");
+      } else {
+        io.to(roomNumber).emit("setCurrentInterviewee", newInterviewee.name);
+      }
     });
   });
 
