@@ -8,6 +8,7 @@ import WinnerCard from "@/components/WinnerCard/WinnerCard";
 import GamePhaseCheck from "@/components/GamePhaseCheck/GamePhaseCheck";
 import { useAppContext } from "@/components/context/AppContext";
 import PhraseCardDisplay from "@/components/PhraseCardDisplay/PhraseCardDisplay";
+import HiringList from "@/components/HiringList/HiringList";
 
 const Game = () => {
   const { state } = useAppContext();
@@ -26,7 +27,10 @@ const Game = () => {
                   />
                 </div>
                 <div className="col-sm">
-                  <GameInfoDisplay baseText={"Job Name"} value={state.CurrentJob} />
+                  <GameInfoDisplay
+                    baseText={"Job Name"}
+                    value={state.CurrentJob}
+                  />
                 </div>
                 <div className="col-sm">
                   <GameInfoDisplay
@@ -37,7 +41,10 @@ const Game = () => {
               </div>
               <div className="row d-flex justify-content-center">
                 <div className="col-md-4 mt-2">
-                  <GameInfoDisplay baseText={"Interviewer"} value={state.CurrentInterviewer} />
+                  <GameInfoDisplay
+                    baseText={"Interviewer"}
+                    value={state.CurrentInterviewer}
+                  />
                 </div>
               </div>
             </div>
@@ -65,7 +72,10 @@ const Game = () => {
             allowedPhases={["Interview Phase", "Employment Phase"]}
           >
             <div className="col-md-2 col-sm-6 pt-4">
-              <GameInfoCard headerText="Current Interviewee" value={state.CurrentInterviewee} />
+              <GameInfoCard
+                headerText="Current Interviewee"
+                value={state.CurrentInterviewee}
+              />
             </div>
           </GamePhaseCheck>
         </div>
@@ -91,12 +101,16 @@ const Game = () => {
 
           <GamePhaseCheck allowedPhases={["Interview Phase"]}>
             <div className="currentCard col-md-12 mt-3 mb-3 text-center">
-              <GameInfoCard headerText="Phrase in Use" value={state.CurrentPhrase} large />
+              <GameInfoCard
+                headerText="Phrase in Use"
+                value={state.CurrentPhrase}
+                large
+              />
             </div>
           </GamePhaseCheck>
 
           <GamePhaseCheck allowedPhases={["Employment Phase"]}>
-            <div className="hiringList">Hiring List Placeholder</div>
+            <HiringList />
           </GamePhaseCheck>
 
           <GamePhaseCheck allowedPhases={["Interview Phase"]}>

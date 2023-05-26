@@ -63,6 +63,10 @@ const SocketWrapper = ({ children }) => {
       socket.on("cardPlayed", (cardText) => {
         dispatch({ type: "SET_CURRENT_PHRASE", value: cardText });
       });
+
+      socket.on("populateHiringList", (hiringList) => {
+        dispatch({ type: "POPULATE_HIRING_LIST", value: hiringList });
+      });
     });
   }, []);
 

@@ -10,6 +10,7 @@ import {
   drawJobCard,
   drawPhraseCards,
   nextInterviewee,
+  generateHiringList,
 } from "@/lib/game";
 import {
   generateRoomNum,
@@ -140,6 +141,8 @@ const handler = (req, res) => {
       io.to(roomNumber).emit("cardPlayed", "");
 
       if (!newInterviewee) {
+        const hiringList = generateHiringList(game);
+        io.to(roomNumber).emit("populateHiringList", hiringList);
         io.to(roomNumber).emit("setGamePhase", "Employment Phase");
       } else {
         io.to(roomNumber).emit("setCurrentInterviewee", newInterviewee.name);
