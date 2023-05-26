@@ -11,6 +11,8 @@ import {
   drawPhraseCards,
   nextInterviewee,
   generateHiringList,
+  checkForWinner,
+  nextRound,
 } from "@/lib/game";
 import {
   generateRoomNum,
@@ -25,6 +27,7 @@ const Games = [];
 let DefaultJobCards = [];
 let DefaultPhraseCards = [];
 const cardsPerPlayer = 5;
+const scoreToWin = 3;
 
 const GetDefaultCards = async () => {
   DefaultJobCards = await getJobCards();
@@ -84,6 +87,27 @@ const handler = (req, res) => {
       io.to(roomNumber).emit("setGamePhase", "Submission Phase");
     });
 
+    const DealPhase = (game) => {
+      io.to(game.room).emit("setGamePhase", "Deal Phase");
+
+      const jobCard = drawJobCard(game);
+      io.to(game.room).emit("updateCurrentJob", jobCard);
+
+      const newRoles = nextRound(game);
+      
+      io.to(game.room).emit("setCurrentInterviewee", newRoles.interviewee.name);
+      io.to(game.room).emit("updateCurrentInterviewer", newRoles.interviewer.name);
+      
+      const phraseCards = drawPhraseCards(game, cardsPerPlayer);
+
+      game.players.forEach((player, i) => {
+        player.phraseCards = phraseCards[i];
+        io.to(player.socketId).emit("updatePlayerData", player);
+      });
+
+      io.to(game.room).emit("setGamePhase", "Interview Phase");
+    };
+
     socket.on(
       "submitPlayerCards",
       ({ socketId, roomNumber, jobs, phrases }) => {
@@ -100,29 +124,8 @@ const handler = (req, res) => {
 
         shuffle(gameSubmittedTo.jobCards);
         shuffle(gameSubmittedTo.phraseCards);
-        resetHasInterviewed(gameSubmittedTo);
 
-        io.to(roomNumber).emit(
-          "updateCurrentInterviewer",
-          gameSubmittedTo.players.find((player) => player.interviewer == true)
-            .name
-        );
-        io.to(roomNumber).emit("setGamePhase", "Deal Phase");
-
-        // Deal Phase Stuff
-        const jobCard = drawJobCard(gameSubmittedTo);
-        io.to(roomNumber).emit("updateCurrentJob", jobCard);
-
-        const phraseCards = drawPhraseCards(gameSubmittedTo, cardsPerPlayer);
-        const newInterviewee = nextInterviewee(gameSubmittedTo);
-
-        gameSubmittedTo.players.forEach((player, i) => {
-          player.phraseCards = phraseCards[i];
-          io.to(player.socketId).emit("updatePlayerData", player);
-        });
-
-        io.to(roomNumber).emit("setCurrentInterviewee", newInterviewee.name);
-        io.to(roomNumber).emit("setGamePhase", "Interview Phase");
+        DealPhase(gameSubmittedTo);
       }
     );
 
@@ -147,6 +150,20 @@ const handler = (req, res) => {
       } else {
         io.to(roomNumber).emit("setCurrentInterviewee", newInterviewee.name);
       }
+    });
+
+    socket.on("roundWinnerSelected", ({ roomNumber, winnerSocketId }) => {
+      const game = Games[getGameIndex(roomNumber, Games)];
+
+      game.players.map((player) => {
+        if (player.socketId == winnerSocketId) {
+          player.points++;
+          io.to(winnerSocketId).emit("updatePlayerData", player);
+        }
+      });
+
+      //   const winner = checkForWinner(game, scoreToWin);
+      DealPhase(game);
     });
   });
 

@@ -1,7 +1,17 @@
 import { useAppContext } from "../context/AppContext";
+import { socket } from "../context/SocketWrapper";
 
 const HiringList = () => {
   const { state } = useAppContext();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    socket.emit("roundWinnerSelected", {
+      roomNumber: state.RoomNumber,
+      winnerSocketId: e.target.value,
+    });
+    console.log(e.target.value);
+  };
 
   if (state.PlayerData.interviewer) {
     return (
@@ -14,6 +24,9 @@ const HiringList = () => {
                   <button
                     className="phraseCard hire btn btn-primary"
                     value={applicant.socketId}
+                    onClick={(e) => {
+                      handleClick(e);
+                    }}
                   >
                     {applicant.name}
                   </button>

@@ -1,5 +1,4 @@
 export const initialState = {
-  Socket: null,
   RoomNumber: "",
   CurrentPhase: "",
   CurrentPhrase: "",
@@ -15,6 +14,7 @@ export const initialState = {
     interviewer: false,
     interviewee: false,
     hasInterviewed: false,
+    hasBeenInterviewer: false,
     ready: false,
     hasSubmittedCards: false,
     points: 0,
