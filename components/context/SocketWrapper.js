@@ -68,6 +68,10 @@ const SocketWrapper = ({ children }) => {
       socket.on("populateHiringList", (hiringList) => {
         dispatch({ type: "POPULATE_HIRING_LIST", value: hiringList });
       });
+
+      socket.on("setGameWinner", (winnerName) => {
+        dispatch({ type: "SET_GAME_WINNER", value: winnerName });
+      });
     });
   }, []);
 

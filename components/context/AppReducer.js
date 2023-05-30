@@ -6,6 +6,7 @@ export const initialState = {
   CurrentInterviewer: "",
   CurrentInterviewee: "",
   CurrentJob: "",
+  GameWinner: "",
   HiringList: [],
   ReadyPlayerData: [{ displayName: "Test", ready: false }],
   PlayerData: {
@@ -91,6 +92,12 @@ export const AppReducer = (state, action) => {
       return {
         ...state,
         CurrentPhrase: action.value,
+      };
+
+    case "SET_GAME_WINNER":
+      return {
+        ...state,
+        GameWinner: action.value,
       };
 
     case "POPULATE_HIRING_LIST":

@@ -91,7 +91,7 @@ const Game = () => {
 
           <GamePhaseCheck allowedPhases={["Winner Phase"]}>
             <div className="col-md-12 mt-3 mb-3 text-center winnerCard">
-              <WinnerCard winnerName="Some Guy!!!" />
+              <WinnerCard winnerName={state.GameWinner} />
             </div>
           </GamePhaseCheck>
 

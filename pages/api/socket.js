@@ -165,13 +165,14 @@ const handler = (req, res) => {
       });
 
       const gameWinner = checkForWinner(game, scoreToWin);
+      console.log(gameWinner);
 
       if (gameWinner != null) {
-        console.log(gameWinner);
+        io.to(roomNumber).emit("setGameWinner", gameWinner);
+        io.to(roomNumber).emit("setGamePhase", "Winner Phase");
       } else {
         DealPhase(game);
       }
-
     });
   });
 
