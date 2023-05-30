@@ -6,7 +6,6 @@ import {
   setupDefaultCards,
   submitPlayerCards,
   checkAllPlayersSubmitted,
-  resetHasInterviewed,
   drawJobCard,
   drawPhraseCards,
   nextInterviewee,
@@ -90,14 +89,20 @@ const handler = (req, res) => {
     const DealPhase = (game) => {
       io.to(game.room).emit("setGamePhase", "Deal Phase");
 
+      shuffle(game.jobCards);
+      shuffle(game.phraseCards);
+
       const jobCard = drawJobCard(game);
       io.to(game.room).emit("updateCurrentJob", jobCard);
 
       const newRoles = nextRound(game);
-      
+
       io.to(game.room).emit("setCurrentInterviewee", newRoles.interviewee.name);
-      io.to(game.room).emit("updateCurrentInterviewer", newRoles.interviewer.name);
-      
+      io.to(game.room).emit(
+        "updateCurrentInterviewer",
+        newRoles.interviewer.name
+      );
+
       const phraseCards = drawPhraseCards(game, cardsPerPlayer);
 
       game.players.forEach((player, i) => {
@@ -121,9 +126,6 @@ const handler = (req, res) => {
         const allPlayersSubmitted = checkAllPlayersSubmitted(gameSubmittedTo);
 
         if (!allPlayersSubmitted) return;
-
-        shuffle(gameSubmittedTo.jobCards);
-        shuffle(gameSubmittedTo.phraseCards);
 
         DealPhase(gameSubmittedTo);
       }
@@ -162,8 +164,14 @@ const handler = (req, res) => {
         }
       });
 
-      //   const winner = checkForWinner(game, scoreToWin);
-      DealPhase(game);
+      const gameWinner = checkForWinner(game, scoreToWin);
+
+      if (gameWinner != null) {
+        console.log(gameWinner);
+      } else {
+        DealPhase(game);
+      }
+
     });
   });
 
