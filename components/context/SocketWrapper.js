@@ -26,7 +26,6 @@ const SocketWrapper = ({ children }) => {
 
       socket.on("updatePlayerData", (newPlayerData) => {
         dispatch({ type: "SET_PLAYER_DATA", value: newPlayerData });
-        console.log(newPlayerData);
       });
 
       socket.on("setGamePhase", (newPhase) => {
@@ -57,10 +56,6 @@ const SocketWrapper = ({ children }) => {
         dispatch({ type: "SET_CURRENT_JOB", value: jobTitle });
       });
 
-      socket.on("setPhraseCards", (phraseCards) => {
-        dispatch({ type: "SET_PLAYER_PHRASE_CARDS", value: phraseCards });
-      });
-
       socket.on("cardPlayed", (cardText) => {
         dispatch({ type: "SET_CURRENT_PHRASE", value: cardText });
       });
@@ -72,6 +67,10 @@ const SocketWrapper = ({ children }) => {
       socket.on("setGameWinner", (winnerName) => {
         dispatch({ type: "SET_GAME_WINNER", value: winnerName });
       });
+
+      socket.on("resetSubmissionData", () => {
+        
+      })
     });
   }, []);
 

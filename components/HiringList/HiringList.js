@@ -10,7 +10,6 @@ const HiringList = () => {
       roomNumber: state.RoomNumber,
       winnerSocketId: e.target.value,
     });
-    console.log(e.target.value);
   };
 
   if (state.PlayerData.interviewer) {

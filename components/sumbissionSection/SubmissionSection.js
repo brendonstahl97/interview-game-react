@@ -4,22 +4,17 @@ import { useAppContext } from "../context/AppContext";
 import SubmissionCard from "../SubmissionCard/SubmissionCard";
 
 const SubmissionSection = () => {
-  const { state } = useAppContext();
+  const { state, dispatch } = useAppContext();
 
   const requiredCards = useRef({
     job: state.ReadyPlayerData.length,
     phrase: state.ReadyPlayerData.length * 2,
   });
 
-  const [submittedCards, setSubmittedCards] = useState({
-    job: 0,
-    phrase: 0,
-  });
-
   useEffect(() => {
     if (
-      submittedCards.job == requiredCards.current.job &&
-      submittedCards.phrase == requiredCards.current.phrase
+      state.SubmittedCards.job == requiredCards.current.job &&
+      state.SubmittedCards.phrase == requiredCards.current.phrase
     ) {
       const data = {
         socketId: socket.id,
@@ -29,7 +24,7 @@ const SubmissionSection = () => {
       };
       socket.emit("submitPlayerCards", data);
     }
-  }, [submittedCards]);
+  }, [state.SubmittedCards]);
 
   const SubmitCard = (value, isPhraseCard) => {
     let cards;
@@ -40,16 +35,10 @@ const SubmissionSection = () => {
     localStorage.setItem(storageItem, JSON.stringify(cards));
 
     if (isPhraseCard) {
-      setSubmittedCards({
-        ...submittedCards,
-        phrase: submittedCards.phrase + 1,
-      });
+      dispatch({ type: "INCREASE_SUBMITTED_PHRASE_CARDS" });
       return;
     }
-    setSubmittedCards({
-      ...submittedCards,
-      job: submittedCards.job + 1,
-    });
+    dispatch({ type: "INCREASE_SUBMITTED_JOB_CARDS" });
   };
 
   return (
@@ -59,7 +48,7 @@ const SubmissionSection = () => {
           <SubmissionCard
             SubmitCard={SubmitCard}
             submitQuotaMet={
-              requiredCards.current.phrase == submittedCards.phrase
+              requiredCards.current.phrase == state.SubmittedCards.phrase
             }
             phrase
           />
@@ -67,7 +56,7 @@ const SubmissionSection = () => {
         <div className="col-sm-6">
           <SubmissionCard
             SubmitCard={SubmitCard}
-            submitQuotaMet={requiredCards.current.job == submittedCards.job}
+            submitQuotaMet={requiredCards.current.job == state.SubmittedCards.job}
           />
         </div>
       </div>

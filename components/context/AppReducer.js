@@ -8,6 +8,10 @@ export const initialState = {
   CurrentJob: "",
   GameWinner: "",
   HiringList: [],
+  SubmittedCards: {
+    job: 0,
+    phrase: 0,
+  },
   ReadyPlayerData: [{ displayName: "Test", ready: false }],
   PlayerData: {
     socketId: "",
@@ -61,15 +65,6 @@ export const AppReducer = (state, action) => {
         CanStart: action.value,
       };
 
-    case "SET_PLAYER_PHRASE_CARDS":
-      return {
-        ...state,
-        PlayerData: {
-          ...state.PlayerData,
-          phraseCards: action.value,
-        },
-      };
-
     case "SET_CURRENT_INTERVIEWER":
       return {
         ...state,
@@ -104,6 +99,35 @@ export const AppReducer = (state, action) => {
       return {
         ...state,
         HiringList: action.value,
+      };
+
+    case "INCREASE_SUBMITTED_JOB_CARDS":
+      return {
+        ...state,
+        SubmittedCards: {
+          ...state.SubmittedCards,
+          job: state.SubmittedCards.job++,
+        },
+      };
+
+    case "INCREASE_SUBMITTED_PHRASE_CARDS":
+      return {
+        ...state,
+        SubmittedCards: {
+          ...state.SubmittedCards,
+          phrase: state.SubmittedCards.phrase++,
+        },
+      };
+
+    case "RESET_SUBMISSION_DATA":
+      localStorage.removeItem("phraseCards");
+      localStorage.removeItem("jobCards");
+      return {
+        ...state,
+        SubmittedCards: {
+          job: 0,
+          phrase: 0,
+        },
       };
 
     case "REPLACE_STATE":

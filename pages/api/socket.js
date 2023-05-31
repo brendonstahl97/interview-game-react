@@ -12,6 +12,7 @@ import {
   generateHiringList,
   checkForWinner,
   nextRound,
+  resetPlayerData,
 } from "@/lib/game";
 import {
   generateRoomNum,
@@ -82,7 +83,8 @@ const handler = (req, res) => {
     });
 
     socket.on("startGame", (roomNumber) => {
-      setupDefaultCards(roomNumber, Games, DefaultPhraseCards, DefaultJobCards);
+      const game = Games[getGameIndex(roomNumber, Games)];
+      setupDefaultCards(game, DefaultPhraseCards, DefaultJobCards);
       io.to(roomNumber).emit("setGamePhase", "Submission Phase");
     });
 
@@ -165,7 +167,6 @@ const handler = (req, res) => {
       });
 
       const gameWinner = checkForWinner(game, scoreToWin);
-      console.log(gameWinner);
 
       if (gameWinner != null) {
         io.to(roomNumber).emit("setGameWinner", gameWinner);
@@ -173,6 +174,18 @@ const handler = (req, res) => {
       } else {
         DealPhase(game);
       }
+    });
+
+    socket.on("resetGame", ({ roomNumber, useNewCards }) => {
+        const game = Games[getGameIndex(roomNumber, Games)];
+        resetPlayerData(game);
+
+        if (useNewCards) {
+            setupDefaultCards(game, DefaultPhraseCards, DefaultJobCards);
+            io.to(roomNumber).emit("resetSubmissionData");
+        } else {
+            DealPhase(game);
+        }
     });
   });
 
