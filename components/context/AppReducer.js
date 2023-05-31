@@ -54,6 +54,18 @@ export const AppReducer = (state, action) => {
       };
 
     case "SET_GAME_PHASE":
+      if (action.value == "Submission Phase") {
+        sessionStorage.removeItem("phraseCards");
+        sessionStorage.removeItem("jobCards");
+        return {
+          ...state,
+          CurrentPhase: action.value,
+          SubmittedCards: {
+            job: 0,
+            phrase: 0,
+          },
+        };
+      }
       return {
         ...state,
         CurrentPhase: action.value,
@@ -120,8 +132,6 @@ export const AppReducer = (state, action) => {
       };
 
     case "RESET_SUBMISSION_DATA":
-      localStorage.removeItem("phraseCards");
-      localStorage.removeItem("jobCards");
       return {
         ...state,
         SubmittedCards: {

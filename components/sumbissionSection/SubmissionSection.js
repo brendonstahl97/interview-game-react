@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { socket } from "../context/SocketWrapper";
 import { useAppContext } from "../context/AppContext";
 import SubmissionCard from "../SubmissionCard/SubmissionCard";
@@ -19,8 +19,8 @@ const SubmissionSection = () => {
       const data = {
         socketId: socket.id,
         roomNumber: state.RoomNumber,
-        jobs: JSON.parse(localStorage.getItem("jobCards")),
-        phrases: JSON.parse(localStorage.getItem("phraseCards")),
+        jobs: JSON.parse(sessionStorage.getItem("jobCards")),
+        phrases: JSON.parse(sessionStorage.getItem("phraseCards")),
       };
       socket.emit("submitPlayerCards", data);
     }
@@ -30,9 +30,9 @@ const SubmissionSection = () => {
     let cards;
     const storageItem = isPhraseCard ? "phraseCards" : "jobCards";
 
-    cards = JSON.parse(localStorage.getItem(storageItem)) || [];
+    cards = JSON.parse(sessionStorage.getItem(storageItem)) || [];
     cards.push(value);
-    localStorage.setItem(storageItem, JSON.stringify(cards));
+    sessionStorage.setItem(storageItem, JSON.stringify(cards));
 
     if (isPhraseCard) {
       dispatch({ type: "INCREASE_SUBMITTED_PHRASE_CARDS" });
@@ -56,7 +56,9 @@ const SubmissionSection = () => {
         <div className="col-sm-6">
           <SubmissionCard
             SubmitCard={SubmitCard}
-            submitQuotaMet={requiredCards.current.job == state.SubmittedCards.job}
+            submitQuotaMet={
+              requiredCards.current.job == state.SubmittedCards.job
+            }
           />
         </div>
       </div>

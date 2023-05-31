@@ -27,7 +27,7 @@ const Games = [];
 let DefaultJobCards = [];
 let DefaultPhraseCards = [];
 const cardsPerPlayer = 5;
-const scoreToWin = 3;
+const scoreToWin = 1;
 
 const GetDefaultCards = async () => {
   DefaultJobCards = await getJobCards();
@@ -183,6 +183,7 @@ const handler = (req, res) => {
         if (useNewCards) {
             setupDefaultCards(game, DefaultPhraseCards, DefaultJobCards);
             io.to(roomNumber).emit("resetSubmissionData");
+            io.to(roomNumber).emit("setGamePhase", "Submission Phase");
         } else {
             DealPhase(game);
         }
