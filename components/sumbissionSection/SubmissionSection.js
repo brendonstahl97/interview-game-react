@@ -24,7 +24,7 @@ const SubmissionSection = () => {
       };
       socket.emit("submitPlayerCards", data);
     }
-  }, [state.SubmittedCards]);
+  }, [state.SubmittedCards, state.RoomNumber]);
 
   const SubmitCard = (value, isPhraseCard) => {
     let cards;

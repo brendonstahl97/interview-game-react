@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import style from "../styles/HowToPlay.module.scss";
 
 const howToPlay = (props) => {
@@ -56,18 +57,18 @@ const howToPlay = (props) => {
             <ul>
               <li>
                 Interviewer decides who wins the round based on the quality of
-                each player's pitch, and the card is assigned.
+                each player&apos;s pitch, and the card is assigned.
               </li>
             </ul>
           </ol>
 
           <p className="paragraph m-3">
             NOTE: We recommend using a VOIP service like{" "}
-            <a href="https://discord.com/">Discord</a> while playing.
+            <Link href="https://discord.com/">Discord</Link> while playing.
           </p>
 
           <div className="card-footer text-muted text-center">
-            <a href="/">Now, Let's Play!</a>
+            <Link href="/">Now, Let&apos;s Play!</Link>
           </div>
         </div>
       </div>

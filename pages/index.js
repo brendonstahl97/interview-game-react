@@ -111,7 +111,7 @@ const Landing = (props) => {
             </a>
           </div>
 
-          <div className="card-footer text-muted">Let's Play!</div>
+          <div className="card-footer text-muted">Let&apos;s Play!</div>
         </div>
       </main>
     </>
