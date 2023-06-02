@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import style from "../styles/HowToPlay.module.scss";
 
-const howToPlay = (props) => {
+const howToPlay = () => {
   return (
     <>
       <Head>

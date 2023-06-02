@@ -1,24 +1,27 @@
 import { socket } from "../context/SocketWrapper";
 import { useAppContext } from "../context/AppContext";
+import { MouseEvent } from "react";
 
-const UsePhraseCard = ({ phrase, increaseCardsPlayed }) => {
+type UsePhraseCardProps = {
+  phrase: string;
+  increaseCardsPlayed: () => void;
+};
+
+const UsePhraseCard = ({ phrase, increaseCardsPlayed }: UsePhraseCardProps) => {
   const { state } = useAppContext();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     socket.emit("playCard", { cardText: phrase, roomNumber: state.RoomNumber });
-    e.target.disabled = true;
+    e.currentTarget.disabled = true;
     increaseCardsPlayed();
   };
 
   return (
     <div className="card text-center">
       <div className="card-body">
-        <h5 className="card-title phrase1" value={phrase || ""}>
-          {phrase}
-        </h5>
+        <h5 className="card-title phrase1">{phrase}</h5>
         <button
-          href="#"
           className="phraseCard btn btn-primary"
           onClick={(e) => {
             handleSubmit(e);

@@ -1,6 +1,11 @@
 import style from "./gameInfoDisplay.module.scss";
 
-const GameInfoDisplay = ({ baseText, value }) => {
+interface IGameInfoDisplayProps {
+  baseText: string;
+  value: string;
+}
+
+const GameInfoDisplay = ({ baseText, value }: IGameInfoDisplayProps) => {
   return <h4 className={style.gameInfoDisplay}>{`${baseText}: ${value}`}</h4>;
 };
 

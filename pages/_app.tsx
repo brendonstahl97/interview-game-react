@@ -9,8 +9,9 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import SocketWrapper from "@/components/context/SocketWrapper";
 import AppWrapper from "@/components/context/AppContext";
+import type { AppProps } from "next/app";
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>

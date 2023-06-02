@@ -1,10 +1,15 @@
+import { MouseEvent } from "react";
 import { useAppContext } from "../context/AppContext";
 import { socket } from "../context/SocketWrapper";
 
-const WinnerCard = ({ winnerName }) => {
+type WinnerCardProps = {
+  winnerName: string;
+};
+
+const WinnerCard = ({ winnerName }: WinnerCardProps) => {
   const { state } = useAppContext();
 
-  const handleClick = (e, newCards = false) => {
+  const handleClick = (e: MouseEvent<HTMLButtonElement>, newCards = false) => {
     e.preventDefault();
     const resetData = {
       useNewCards: newCards,
@@ -21,7 +26,6 @@ const WinnerCard = ({ winnerName }) => {
       <br />
 
       <button
-        href="#"
         className="replaySameCardsBtn btn btn-primary m-3"
         onClick={(e) => {
           handleClick(e);
@@ -30,7 +34,6 @@ const WinnerCard = ({ winnerName }) => {
         New Game with Same Cards
       </button>
       <button
-        href="#"
         className="replayReuseCardsBtn btn btn-primary m-3"
         onClick={(e) => {
           handleClick(e, true);

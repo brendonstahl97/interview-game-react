@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { useRouter } from "next/router";
 import style from "../styles/Landing.module.scss";
 import Head from "next/head";
 import { socket } from "@/components/context/SocketWrapper";
 import { useAppContext } from "@/components/context/AppContext";
+import { REDUCER_ACTION_TYPE } from "../components/context/AppReducer";
 
-const Landing = (props) => {
+const Landing = () => {
   const { dispatch } = useAppContext();
   const [inputState, setInputState] = useState({
     displayName: "",
@@ -14,7 +15,7 @@ const Landing = (props) => {
 
   const router = useRouter();
 
-  const handleEnterGame = (e, isHost) => {
+  const handleEnterGame = (e: MouseEvent<HTMLElement>, isHost: boolean) => {
     e.preventDefault();
 
     // Temp Error Handling
@@ -35,7 +36,7 @@ const Landing = (props) => {
       roomNumber: room,
     });
 
-    dispatch({ type: "SET_CURRENT_JOB", value: ""});
+    dispatch({ type: REDUCER_ACTION_TYPE.SET_CURRENT_JOB, value: "" });
 
     router.push("/game");
   };

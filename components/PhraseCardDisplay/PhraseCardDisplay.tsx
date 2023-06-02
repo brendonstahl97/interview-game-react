@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { socket } from "../context/SocketWrapper";
 import UsePhraseCard from "../UsePhraseCard/UsePhraseCard";
 import EndTurnCard from "../EndTurnCard/EndTurnCard";
@@ -12,11 +12,11 @@ const PhraseCardDisplay = () => {
     setCardsPlayedCount(cardsPlayedCount + 1);
   };
 
-  const handleEndTurn = (e) => {
+  const handleEndTurn = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (cardsPlayedCount < state.PlayerData.phraseCards.length) return;
 
-    socket.emit("turnEnded", { roomNumber: state.RoomNumber })
+    socket.emit("turnEnded", state.RoomNumber);
   };
 
   if (state.PlayerData.interviewee) {
@@ -62,7 +62,7 @@ const PhraseCardDisplay = () => {
         {cardsPlayedCount >= state.PlayerData.phraseCards.length && (
           <div className="row d-flex justify-content-center">
             <div className="col-md-3 col-sm-6">
-              <EndTurnCard handleEndTurn={handleEndTurn}/>
+              <EndTurnCard handleEndTurn={handleEndTurn} />
             </div>
           </div>
         )}

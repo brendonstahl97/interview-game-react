@@ -23,9 +23,27 @@ import {
   getGameIndex,
 } from "@/lib/utils";
 
-const Games = [];
-let DefaultJobCards = [];
-let DefaultPhraseCards = [];
+// Extending NextAPIRepsonse with socket functionality from the bottom up
+import type { Server as HTTPServer } from "http";
+import { NextApiRequest, NextApiResponse } from "next";
+import type { Socket as NetSocket } from "net";
+import type { Server as IOServer } from "socket.io";
+
+interface SocketServer extends HTTPServer {
+  io?: IOServer | undefined;
+}
+
+interface SocketWithIO extends NetSocket {
+  server: SocketServer;
+}
+
+interface NextApiResponseWithSocket extends NextApiResponse {
+  socket: SocketWithIO;
+}
+
+const Games: any[] = [];
+let DefaultJobCards: string[] = [];
+let DefaultPhraseCards: string[] = [];
 const cardsPerPlayer = 5;
 const scoreToWin = 1;
 
@@ -36,7 +54,7 @@ const GetDefaultCards = async () => {
 
 GetDefaultCards();
 
-const handler = (req, res) => {
+const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
   if (res.socket.server.io) {
     console.log("Socket is already running");
     res.end();
@@ -44,7 +62,7 @@ const handler = (req, res) => {
   }
 
   console.log("Socket is initializing");
-  const io = new Server(res.socket.server);
+  const io = new Server<ClientToServerEvents, ServerToClientEvents>(res.socket.server);
   res.socket.server.io = io;
 
   io.on("connection", (socket) => {
@@ -88,7 +106,7 @@ const handler = (req, res) => {
       io.to(roomNumber).emit("setGamePhase", "Submission Phase");
     });
 
-    const DealPhase = (game) => {
+    const DealPhase = (game: any) => {
       io.to(game.room).emit("setGamePhase", "Deal Phase");
 
       shuffle(game.jobCards);
@@ -99,7 +117,7 @@ const handler = (req, res) => {
 
       const newRoles = nextRound(game);
 
-      io.to(game.room).emit("setCurrentInterviewee", newRoles.interviewee.name);
+      io.to(game.room).emit("updateCurrentInterviewee", newRoles.interviewee.name);
       io.to(game.room).emit(
         "updateCurrentInterviewer",
         newRoles.interviewer.name
@@ -107,7 +125,7 @@ const handler = (req, res) => {
 
       const phraseCards = drawPhraseCards(game, cardsPerPlayer);
 
-      game.players.forEach((player, i) => {
+      game.players.forEach((player: PlayerData, i: number) => {
         player.phraseCards = phraseCards[i];
         io.to(player.socketId).emit("updatePlayerData", player);
       });
@@ -137,11 +155,11 @@ const handler = (req, res) => {
       io.to(roomNumber).emit("cardPlayed", cardText);
     });
 
-    socket.on("turnEnded", ({ roomNumber }) => {
+    socket.on("turnEnded", (roomNumber) => {
       const game = Games[getGameIndex(roomNumber, Games)];
       const newInterviewee = nextInterviewee(game);
 
-      game.players.forEach((player) => {
+      game.players.forEach((player: PlayerData) => {
         io.to(player.socketId).emit("updatePlayerData", player);
       });
 
@@ -152,14 +170,14 @@ const handler = (req, res) => {
         io.to(roomNumber).emit("populateHiringList", hiringList);
         io.to(roomNumber).emit("setGamePhase", "Employment Phase");
       } else {
-        io.to(roomNumber).emit("setCurrentInterviewee", newInterviewee.name);
+        io.to(roomNumber).emit("updateCurrentInterviewee", newInterviewee.name);
       }
     });
 
     socket.on("roundWinnerSelected", ({ roomNumber, winnerSocketId }) => {
       const game = Games[getGameIndex(roomNumber, Games)];
 
-      game.players.map((player) => {
+      game.players.map((player: PlayerData) => {
         if (player.socketId == winnerSocketId) {
           player.points++;
           io.to(winnerSocketId).emit("updatePlayerData", player);
@@ -177,16 +195,16 @@ const handler = (req, res) => {
     });
 
     socket.on("resetGame", ({ roomNumber, useNewCards }) => {
-        const game = Games[getGameIndex(roomNumber, Games)];
-        resetPlayerData(game);
+      const game = Games[getGameIndex(roomNumber, Games)];
+      resetPlayerData(game);
 
-        if (useNewCards) {
-            setupDefaultCards(game, DefaultPhraseCards, DefaultJobCards);
-            io.to(roomNumber).emit("resetSubmissionData");
-            io.to(roomNumber).emit("setGamePhase", "Submission Phase");
-        } else {
-            DealPhase(game);
-        }
+      if (useNewCards) {
+        setupDefaultCards(game, DefaultPhraseCards, DefaultJobCards);
+        io.to(roomNumber).emit("resetSubmissionData");
+        io.to(roomNumber).emit("setGamePhase", "Submission Phase");
+      } else {
+        DealPhase(game);
+      }
     });
   });
 

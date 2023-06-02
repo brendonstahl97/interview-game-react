@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { MouseEvent } from "react";
 
-const SubmissionCard = ({ phrase = false, SubmitCard, submitQuotaMet = false}) => {
+type SubmissionCardProps = {
+  phrase?: boolean;
+  SubmitCard: (inputValue: string, phrase: boolean) => void;
+  submitQuotaMet?: boolean;
+};
+
+const SubmissionCard = ({
+  phrase = false,
+  SubmitCard,
+  submitQuotaMet = false,
+}: SubmissionCardProps) => {
   const [inputValue, setInputValue] = useState("");
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (inputValue == "") return;
 
@@ -31,7 +42,6 @@ const SubmissionCard = ({ phrase = false, SubmitCard, submitQuotaMet = false}) =
           />
           <button
             type="submit"
-            href="#"
             onClick={handleSubmit}
             className="addJobBtn btn btn-primary"
             disabled={submitQuotaMet}

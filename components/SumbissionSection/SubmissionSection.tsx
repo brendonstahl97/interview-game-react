@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { socket } from "../context/SocketWrapper";
 import { useAppContext } from "../context/AppContext";
 import SubmissionCard from "../SubmissionCard/SubmissionCard";
+import { REDUCER_ACTION_TYPE } from "../context/AppReducer";
 
 const SubmissionSection = () => {
   const { state, dispatch } = useAppContext();
@@ -13,8 +14,8 @@ const SubmissionSection = () => {
 
   useEffect(() => {
     if (
-      state.SubmittedCards.job == requiredCards.current.job &&
-      state.SubmittedCards.phrase == requiredCards.current.phrase
+      state.SubmittedCards.job >= requiredCards.current.job &&
+      state.SubmittedCards.phrase >= requiredCards.current.phrase
     ) {
       const data = {
         socketId: socket.id,
@@ -26,7 +27,7 @@ const SubmissionSection = () => {
     }
   }, [state.SubmittedCards, state.RoomNumber]);
 
-  const SubmitCard = (value, isPhraseCard) => {
+  const SubmitCard = (value: string, isPhraseCard: boolean) => {
     let cards;
     const storageItem = isPhraseCard ? "phraseCards" : "jobCards";
 
@@ -35,10 +36,10 @@ const SubmissionSection = () => {
     sessionStorage.setItem(storageItem, JSON.stringify(cards));
 
     if (isPhraseCard) {
-      dispatch({ type: "INCREASE_SUBMITTED_PHRASE_CARDS" });
+      dispatch({ type: REDUCER_ACTION_TYPE.INCREASE_SUBMITTED_PHRASE_CARDS });
       return;
     }
-    dispatch({ type: "INCREASE_SUBMITTED_JOB_CARDS" });
+    dispatch({ type: REDUCER_ACTION_TYPE.INCREASE_SUBMITTED_JOB_CARDS });
   };
 
   return (

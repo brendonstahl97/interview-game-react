@@ -1,14 +1,16 @@
+import { MouseEvent } from "react";
 import { useAppContext } from "../context/AppContext";
 import { socket } from "../context/SocketWrapper";
 
 const HiringList = () => {
   const { state } = useAppContext();
 
-  const handleClick = (e) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    console.log(e.currentTarget.value);
     socket.emit("roundWinnerSelected", {
       roomNumber: state.RoomNumber,
-      winnerSocketId: e.target.value,
+      winnerSocketId: e.currentTarget.value,
     });
   };
 

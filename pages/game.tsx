@@ -1,4 +1,3 @@
-import EndTurnCard from "@/components/EndTurnCard/EndTurnCard";
 import GameInfoCard from "@/components/GameInfoCard/GameInfoCard";
 import GameInfoDisplay from "@/components/GameInfoDisplay/GameInfoDisplay";
 import PhaseDisplay from "@/components/PhaseDisplay/PhaseDisplay";
@@ -58,7 +57,7 @@ const Game = () => {
             <div className="col-md-2 col-sm-6 pt-4">
               <GameInfoCard
                 headerText="Your Points"
-                value={state.PlayerData.points}
+                value={state.PlayerData.points.toString()}
               />
             </div>
           </GamePhaseCheck>
@@ -104,7 +103,7 @@ const Game = () => {
               <GameInfoCard
                 headerText="Phrase in Use"
                 value={state.CurrentPhrase}
-                large
+                isLarge
               />
             </div>
           </GamePhaseCheck>
