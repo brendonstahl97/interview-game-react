@@ -1,9 +1,8 @@
 import PocketBase from "pocketbase";
-import Game from "@/Classes/Game/game";
+import Game from "@/Classes/Game/Game";
 import { Socket } from "socket.io";
 const pb = new PocketBase("http://127.0.0.1:8090");
 
-// Check this later
 export const getGame = (roomNum: string, games: Game[]): Game => {
   return games.find((game) => game.room == roomNum);
 };

@@ -31,7 +31,7 @@ const Games: Game[] = [];
 let DefaultJobCards: string[] = [];
 let DefaultPhraseCards: string[] = [];
 const cardsPerPlayer = 5;
-const scoreToWin = 1;
+const scoreToWin = 3;
 
 const GetDefaultCards = async () => {
   DefaultJobCards = await getJobCards();
@@ -110,6 +110,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
         "updateCurrentInterviewee",
         newRoles.interviewee.name
       );
+      
       io.to(game.room).emit(
         "updateCurrentInterviewer",
         newRoles.interviewer.name
@@ -145,7 +146,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
     socket.on("turnEnded", (roomNumber) => {
       const game = getGame(roomNumber, Games);
-      const newInterviewee = game.nextInterviewee();
+      const newInterviewee = game.gameMode.nextInterviewee(game.players);
 
       game.players.forEach((player: PlayerData) => {
         io.to(player.socketId).emit("updatePlayerData", player);
@@ -163,14 +164,11 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     });
 
     socket.on("roundWinnerSelected", ({ roomNumber, winnerSocketId }) => {
-      const game =getGame(roomNumber, Games);
+      const game = getGame(roomNumber, Games);
 
-      game.players.map((player: PlayerData) => {
-        if (player.socketId == winnerSocketId) {
-          player.points++;
-          io.to(winnerSocketId).emit("updatePlayerData", player);
-        }
-      });
+      const winningPlayer = game.gameMode.assignPoints(winnerSocketId, game.players);
+
+      io.to(winnerSocketId).emit("updatePlayerData", winningPlayer);
 
       const gameWinner = game.checkForWinner(scoreToWin);
 
