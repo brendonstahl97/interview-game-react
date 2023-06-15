@@ -18,9 +18,9 @@ const UsePhraseCard = ({ phrase, increaseCardsPlayed }: UsePhraseCardProps) => {
   };
 
   return (
-    <div className="card text-center">
-      <div className="card-body">
-        <h5 className="card-title phrase1">{phrase}</h5>
+    <div className="card text-center h-100">
+      <div className="card-body d-flex flex-column justify-content-end">
+        <h5 className="card-title phrase1 my-auto pb-3">{phrase}</h5>
         <button
           className="phraseCard btn btn-primary"
           onClick={(e) => {

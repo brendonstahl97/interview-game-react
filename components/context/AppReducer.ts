@@ -146,7 +146,6 @@ export const AppReducer = (
       };
 
     case REDUCER_ACTION_TYPE.SET_GAME_MODE:
-        console.log(action.value);
       return {
         ...state,
         GameMode: action.value,

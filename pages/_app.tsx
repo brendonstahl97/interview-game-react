@@ -18,11 +18,13 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header />
-      <AppWrapper>
-        <SocketWrapper>
-          <Component {...pageProps} />
-        </SocketWrapper>
-      </AppWrapper>
+      <main>
+        <AppWrapper>
+          <SocketWrapper>
+            <Component {...pageProps} />
+          </SocketWrapper>
+        </AppWrapper>
+      </main>
       <Footer />
     </>
   );

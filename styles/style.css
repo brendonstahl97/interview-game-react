@@ -1,6 +1,11 @@
 body {
   font-family: "JetBrains Mono", monospace;
   background-color: rgb(71, 133, 226);
+  overflow-x: hidden;
+}
+
+section {
+  min-height: 80vh;
 }
 
 .card {
