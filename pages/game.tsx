@@ -18,6 +18,7 @@ const Game = () => {
         <div className="jumbotron jumbotron-fluid text-center pt-3 pb-2">
           <div className="container">
             <h1 className="display-4">The Interview Game</h1>
+
             <div className="container">
               <div className="row">
                 <div className="col-sm">
@@ -26,10 +27,15 @@ const Game = () => {
                     value={state.RoomNumber}
                   />
                 </div>
-                <div className="col-sm">
+                {/* <div className="col-sm">
                   <GameInfoDisplay
                     baseText={"Job Name"}
                     value={state.CurrentJob}
+                  /> */}
+                <div className="col-sm">
+                  <GameInfoDisplay
+                    baseText={"Game Mode"}
+                    value={state.GameMode}
                   />
                 </div>
                 <div className="col-sm">
@@ -53,7 +59,10 @@ const Game = () => {
 
         <div className="row d-flex justify-content-center text-center">
           <GamePhaseCheck
-            allowedPhases={[GAME_PHASE.INTERVIEW_PHASE, GAME_PHASE.EMPLOYMENT_PHASE]}
+            allowedPhases={[
+              GAME_PHASE.INTERVIEW_PHASE,
+              GAME_PHASE.EMPLOYMENT_PHASE,
+            ]}
           >
             <div className="col-md-2 col-sm-6 pt-4">
               <GameInfoCard
@@ -69,7 +78,10 @@ const Game = () => {
           </GamePhaseCheck>
 
           <GamePhaseCheck
-            allowedPhases={[GAME_PHASE.INTERVIEW_PHASE, GAME_PHASE.EMPLOYMENT_PHASE]}
+            allowedPhases={[
+              GAME_PHASE.INTERVIEW_PHASE,
+              GAME_PHASE.EMPLOYMENT_PHASE,
+            ]}
           >
             <div className="col-md-2 col-sm-6 pt-4">
               <GameInfoCard

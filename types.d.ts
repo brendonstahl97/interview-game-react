@@ -17,14 +17,15 @@ type ReadyPlayerData = {
 };
 
 type HiringListEntry = {
-    socketId: string,
-    name: string
-}
+  socketId: string;
+  name: string;
+};
 
 interface ServerToClientEvents {
   connect: () => void;
   connectError: () => void;
   updateRoomData: (room: string) => void;
+  setGameMode: (gameMode: import("@/lib/enums").GAME_MODE) => void;
   updatePlayerData: (newPlayerData: IPlayerData) => void;
   setGamePhase: (newPhase: GAME_PHASE) => void;
   updatePlayerList: (readyPlayerData: ReadyPlayerData[]) => void;

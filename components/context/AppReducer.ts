@@ -1,7 +1,8 @@
-import { GAME_PHASE } from "@/lib/enums";
+import { GAME_MODE, GAME_PHASE } from "@/lib/enums";
 
 export type stateType = {
   RoomNumber: string;
+  GameMode: GAME_MODE;
   CurrentPhase: GAME_PHASE;
   CurrentPhrase: string;
   CanStart: boolean;
@@ -20,6 +21,7 @@ export type stateType = {
 
 export const initialState: stateType = {
   RoomNumber: "",
+  GameMode: GAME_MODE.NONE,
   CurrentPhase: GAME_PHASE.NONE,
   CurrentPhrase: "",
   CanStart: false,
@@ -50,6 +52,7 @@ export const initialState: stateType = {
 export const enum REDUCER_ACTION_TYPE {
   SET_ROOM_NUMBER,
   SET_PLAYER_DATA,
+  SET_GAME_MODE,
   SET_READY_PLAYER_DATA,
   SET_SOCKET,
   SET_GAME_PHASE,
@@ -74,6 +77,10 @@ export type ReducerAction =
   | {
       type: REDUCER_ACTION_TYPE.SET_PLAYER_DATA;
       value: PlayerData;
+    }
+  | {
+      type: REDUCER_ACTION_TYPE.SET_GAME_MODE;
+      value: GAME_MODE;
     }
   | {
       type: REDUCER_ACTION_TYPE.SET_READY_PLAYER_DATA;
@@ -136,6 +143,13 @@ export const AppReducer = (
       return {
         ...state,
         PlayerData: action.value,
+      };
+
+    case REDUCER_ACTION_TYPE.SET_GAME_MODE:
+        console.log(action.value);
+      return {
+        ...state,
+        GameMode: action.value,
       };
 
     case REDUCER_ACTION_TYPE.SET_READY_PLAYER_DATA:

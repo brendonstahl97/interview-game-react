@@ -1,6 +1,13 @@
+import { GAME_MODE } from "@/lib/enums";
 import { GamemodeStrategy } from "../GameMode";
 
 export class InterviewGameMode implements GamemodeStrategy {
+  Name: GAME_MODE;
+
+  constructor() {
+    this.Name = GAME_MODE.INTERVIEW_GAME;
+  }
+
   chooseNext(availablePlayers: PlayerData[], allPlayers: PlayerData[]): number {
     if (availablePlayers.length <= 0) return null;
 

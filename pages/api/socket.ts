@@ -93,6 +93,8 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     socket.on("startGame", (roomNumber) => {
       const game = getGame(roomNumber, Games);
       game.setupDefaultCards(DefaultPhraseCards, DefaultJobCards);
+      console.log(game.gameMode.Name);
+      io.to(roomNumber).emit("setGameMode", game.gameMode.Name);
       io.to(roomNumber).emit("setGamePhase", GAME_PHASE.SUBMISSION_PHASE);
     });
 

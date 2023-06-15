@@ -36,6 +36,10 @@ const SocketWrapper = ({ children }: { children: ReactElement }) => {
         dispatch({ type: REDUCER_ACTION_TYPE.SET_GAME_PHASE, value: newPhase });
       });
 
+      socket.on("setGameMode", (gameMode) => {
+        dispatch({ type: REDUCER_ACTION_TYPE.SET_GAME_MODE, value: gameMode });
+      });
+
       socket.on("updatePlayerList", (readyPlayerData) => {
         dispatch({
           type: REDUCER_ACTION_TYPE.SET_READY_PLAYER_DATA,

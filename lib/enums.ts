@@ -7,3 +7,9 @@ export const enum GAME_PHASE {
   WINNER_PHASE,
   NONE,
 }
+
+export const enum GAME_MODE {
+    INTERVIEW_GAME = "Interview Game",
+    BOARD_OF_DIRECTORS = "Board of Directors",
+    NONE = "",
+}
