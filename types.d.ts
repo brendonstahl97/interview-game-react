@@ -26,7 +26,7 @@ interface ServerToClientEvents {
   connectError: () => void;
   updateRoomData: (room: string) => void;
   updatePlayerData: (newPlayerData: IPlayerData) => void;
-  setGamePhase: (newPhase: string) => void;
+  setGamePhase: (newPhase: GAME_PHASE) => void;
   updatePlayerList: (readyPlayerData: ReadyPlayerData[]) => void;
   setCanStart: (canStart: boolean) => void;
   updateCurrentInterviewer: (interviewerName: string) => void;

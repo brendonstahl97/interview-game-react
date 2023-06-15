@@ -1,6 +1,8 @@
+import { GAME_PHASE } from "@/lib/enums";
+
 export type stateType = {
   RoomNumber: string;
-  CurrentPhase: string;
+  CurrentPhase: GAME_PHASE;
   CurrentPhrase: string;
   CanStart: boolean;
   CurrentInterviewer: string;
@@ -18,7 +20,7 @@ export type stateType = {
 
 export const initialState: stateType = {
   RoomNumber: "",
-  CurrentPhase: "",
+  CurrentPhase: GAME_PHASE.NONE,
   CurrentPhrase: "",
   CanStart: false,
   CurrentInterviewer: "",
@@ -79,7 +81,7 @@ export type ReducerAction =
     }
   | {
       type: REDUCER_ACTION_TYPE.SET_GAME_PHASE;
-      value: string;
+      value: GAME_PHASE;
     }
   | {
       type: REDUCER_ACTION_TYPE.SET_CAN_START;
@@ -143,7 +145,7 @@ export const AppReducer = (
       };
 
     case REDUCER_ACTION_TYPE.SET_GAME_PHASE:
-      if (action.value == "Submission Phase") {
+      if (action.value == GAME_PHASE.SUBMISSION_PHASE) {
         sessionStorage.removeItem("phraseCards");
         sessionStorage.removeItem("jobCards");
         return {

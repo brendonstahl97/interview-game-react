@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import Game from "@/Classes/Game/Game";
+import { GAME_PHASE } from "@/lib/enums";
 import {
   generateRoomNum,
   AddPlayerToGame,
@@ -67,7 +68,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
       io.to(addedPlayer.socketId).emit("updateRoomData", room);
       io.to(addedPlayer.socketId).emit("updatePlayerData", addedPlayer);
-      io.to(addedPlayer.socketId).emit("setGamePhase", "Setup Phase");
+      io.to(addedPlayer.socketId).emit("setGamePhase", GAME_PHASE.SETUP_PHASE);
 
       const playerReadyData = getGame(room, Games).updatePlayerList();
       io.to(room).emit("updatePlayerList", playerReadyData);
@@ -92,11 +93,11 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     socket.on("startGame", (roomNumber) => {
       const game = getGame(roomNumber, Games);
       game.setupDefaultCards(DefaultPhraseCards, DefaultJobCards);
-      io.to(roomNumber).emit("setGamePhase", "Submission Phase");
+      io.to(roomNumber).emit("setGamePhase", GAME_PHASE.SUBMISSION_PHASE);
     });
 
     const DealPhase = (game: Game) => {
-      io.to(game.room).emit("setGamePhase", "Deal Phase");
+      io.to(game.room).emit("setGamePhase", GAME_PHASE.DEAL_PHASE);
 
       shuffle(game.jobCards);
       shuffle(game.phraseCards);
@@ -123,7 +124,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
         io.to(player.socketId).emit("updatePlayerData", player);
       });
 
-      io.to(game.room).emit("setGamePhase", "Interview Phase");
+      io.to(game.room).emit("setGamePhase", GAME_PHASE.INTERVIEW_PHASE);
     };
 
     socket.on(
@@ -157,7 +158,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
       if (!newInterviewee) {
         const hiringList = game.generateHiringList();
         io.to(roomNumber).emit("populateHiringList", hiringList);
-        io.to(roomNumber).emit("setGamePhase", "Employment Phase");
+        io.to(roomNumber).emit("setGamePhase", GAME_PHASE.EMPLOYMENT_PHASE);
       } else {
         io.to(roomNumber).emit("updateCurrentInterviewee", newInterviewee.name);
       }
@@ -174,7 +175,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
       if (gameWinner != null) {
         io.to(roomNumber).emit("setGameWinner", gameWinner);
-        io.to(roomNumber).emit("setGamePhase", "Winner Phase");
+        io.to(roomNumber).emit("setGamePhase", GAME_PHASE.WINNER_PHASE);
       } else {
         DealPhase(game);
       }
@@ -186,9 +187,8 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
       if (useNewCards) {
         game.setupDefaultCards(DefaultPhraseCards, DefaultJobCards);
-        console.log(DefaultJobCards);
         io.to(roomNumber).emit("resetSubmissionData");
-        io.to(roomNumber).emit("setGamePhase", "Submission Phase");
+        io.to(roomNumber).emit("setGamePhase", GAME_PHASE.SUBMISSION_PHASE);
       } else {
         DealPhase(game);
       }

@@ -7,7 +7,6 @@ const HiringList = () => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(e.currentTarget.value);
     socket.emit("roundWinnerSelected", {
       roomNumber: state.RoomNumber,
       winnerSocketId: e.currentTarget.value,

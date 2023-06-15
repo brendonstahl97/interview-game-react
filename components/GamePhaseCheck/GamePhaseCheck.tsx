@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { useAppContext } from "../context/AppContext";
 
 interface IGamePhaseCheckProps {
-  allowedPhases: string[];
+  allowedPhases: GAME_PHASE[];
   children: ReactElement;
 }
 

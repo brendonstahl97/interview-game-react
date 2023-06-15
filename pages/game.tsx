@@ -8,6 +8,7 @@ import GamePhaseCheck from "@/components/GamePhaseCheck/GamePhaseCheck";
 import { useAppContext } from "@/components/context/AppContext";
 import PhraseCardDisplay from "@/components/PhraseCardDisplay/PhraseCardDisplay";
 import HiringList from "@/components/HiringList/HiringList";
+import { GAME_PHASE } from "@/lib/enums";
 
 const Game = () => {
   const { state } = useAppContext();
@@ -52,7 +53,7 @@ const Game = () => {
 
         <div className="row d-flex justify-content-center text-center">
           <GamePhaseCheck
-            allowedPhases={["Interview Phase", "Employment Phase"]}
+            allowedPhases={[GAME_PHASE.INTERVIEW_PHASE, GAME_PHASE.EMPLOYMENT_PHASE]}
           >
             <div className="col-md-2 col-sm-6 pt-4">
               <GameInfoCard
@@ -61,14 +62,14 @@ const Game = () => {
               />
             </div>
           </GamePhaseCheck>
-          <GamePhaseCheck allowedPhases={["Setup Phase"]}>
+          <GamePhaseCheck allowedPhases={[GAME_PHASE.SETUP_PHASE]}>
             <div className="gameStarterDiv col-md-3 col-sm-6 pt-4">
               <PhaseDisplay />
             </div>
           </GamePhaseCheck>
 
           <GamePhaseCheck
-            allowedPhases={["Interview Phase", "Employment Phase"]}
+            allowedPhases={[GAME_PHASE.INTERVIEW_PHASE, GAME_PHASE.EMPLOYMENT_PHASE]}
           >
             <div className="col-md-2 col-sm-6 pt-4">
               <GameInfoCard
@@ -82,23 +83,23 @@ const Game = () => {
 
       <div className="row d-flex justify-content-center">
         <div className="col-md-5 col-sm-8 left-side">
-          <GamePhaseCheck allowedPhases={["Setup Phase"]}>
+          <GamePhaseCheck allowedPhases={[GAME_PHASE.SETUP_PHASE]}>
             <div className="col-md-12 mt-3 mb-3 text-center playerListCard">
               <PlayersDisplay></PlayersDisplay>
             </div>
           </GamePhaseCheck>
 
-          <GamePhaseCheck allowedPhases={["Winner Phase"]}>
+          <GamePhaseCheck allowedPhases={[GAME_PHASE.WINNER_PHASE]}>
             <div className="col-md-12 mt-3 mb-3 text-center winnerCard">
               <WinnerCard winnerName={state.GameWinner} />
             </div>
           </GamePhaseCheck>
 
-          <GamePhaseCheck allowedPhases={["Submission Phase"]}>
+          <GamePhaseCheck allowedPhases={[GAME_PHASE.SUBMISSION_PHASE]}>
             <SubmissionSection />
           </GamePhaseCheck>
 
-          <GamePhaseCheck allowedPhases={["Interview Phase"]}>
+          <GamePhaseCheck allowedPhases={[GAME_PHASE.INTERVIEW_PHASE]}>
             <div className="currentCard col-md-12 mt-3 mb-3 text-center">
               <GameInfoCard
                 headerText="Phrase in Use"
@@ -108,11 +109,11 @@ const Game = () => {
             </div>
           </GamePhaseCheck>
 
-          <GamePhaseCheck allowedPhases={["Employment Phase"]}>
+          <GamePhaseCheck allowedPhases={[GAME_PHASE.EMPLOYMENT_PHASE]}>
             <HiringList />
           </GamePhaseCheck>
 
-          <GamePhaseCheck allowedPhases={["Interview Phase"]}>
+          <GamePhaseCheck allowedPhases={[GAME_PHASE.INTERVIEW_PHASE]}>
             <PhraseCardDisplay />
           </GamePhaseCheck>
         </div>
