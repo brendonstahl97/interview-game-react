@@ -61,6 +61,21 @@ const Game = () => {
               GAME_PHASE.EMPLOYMENT_PHASE,
             ]}
           >
+            <div className="col-6">
+              <GameInfoCard
+                headerText="Current Interviewer"
+                value={state.CurrentInterviewer}
+              />
+            </div>
+          </GamePhaseCheck>
+        </div>
+        <div className="row d-flex justify-content-center text-center">
+          <GamePhaseCheck
+            allowedPhases={[
+              GAME_PHASE.INTERVIEW_PHASE,
+              GAME_PHASE.EMPLOYMENT_PHASE,
+            ]}
+          >
             <div className="col-8 pt-4">
               <GameInfoCard headerText="Job Title" value={state.CurrentJob} />
             </div>
