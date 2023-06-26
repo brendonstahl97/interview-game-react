@@ -23,6 +23,11 @@ type HiringListEntry = {
 
 type Role = "Interviewer" | "Interviewee";
 
+type PlayerRoleData = {
+  player: PlayerData;
+  role: Role;
+};
+
 interface ServerToClientEvents {
   connect: () => void;
   connectError: () => void;

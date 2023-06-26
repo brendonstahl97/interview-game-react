@@ -65,14 +65,17 @@ export class InterviewGameMode implements GamemodeStrategy {
     return null;
   };
 
-  assignNewRoles(allPlayers: PlayerData[]): {
-    interviewer: PlayerData;
-    interviewee: PlayerData;
-  } {
-    return {
-      interviewer: this.nextInterviewer(allPlayers),
-      interviewee: this.nextInterviewee(allPlayers),
-    };
+  assignNewRoles(allPlayers: PlayerData[]): PlayerRoleData[] {
+    return [
+      {
+        player: this.nextInterviewer(allPlayers),
+        role: "Interviewer",
+      },
+      {
+        player: this.nextInterviewee(allPlayers),
+        role: "Interviewee",
+      },
+    ];
   }
 
   resetForRound(players: PlayerData[]): void {
@@ -92,10 +95,10 @@ export class InterviewGameMode implements GamemodeStrategy {
     });
   }
 
-  nextRound(players: PlayerData[]): void {
-        this.resetForRound(players);
+  nextRound(players: PlayerData[]): PlayerRoleData[] {
+    this.resetForRound(players);
     const newRoles = this.assignNewRoles(players);
-    // return newRoles;
+    return newRoles;
   }
 
   assignPoints(

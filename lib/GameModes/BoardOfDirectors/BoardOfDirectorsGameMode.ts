@@ -64,16 +64,6 @@ export class BoardOfDirectorsGameMode extends InterviewGameMode implements Gamem
     return null;
   };
 
-  assignNewRoles(allPlayers: PlayerData[]): {
-    interviewer: PlayerData;
-    interviewee: PlayerData;
-  } {
-    return {
-      interviewer: this.nextInterviewer(allPlayers),
-      interviewee: this.nextInterviewee(allPlayers),
-    };
-  }
-
   assignPoints(
     recipientSocketId: string,
     allPlayers: PlayerData[]

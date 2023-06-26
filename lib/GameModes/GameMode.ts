@@ -4,14 +4,11 @@ export interface GamemodeStrategy {
   Name: GAME_MODE;
   chooseNext(availablePlayers: PlayerData[], allPlayers: PlayerData[]): number;
   nextInterviewee(allPlayers: PlayerData[]): PlayerData;
-  assignNewRoles(allPlayers: PlayerData[]): {
-    interviewer: PlayerData;
-    interviewee: PlayerData;
-  };
+  assignNewRoles(allPlayers: PlayerData[]): PlayerRoleData[];
 
   resetForRound(players: PlayerData[]): void;
   fullPlayerReset(players: PlayerData[]): void;
-  nextRound(players: PlayerData[]): void;
+  nextRound(players: PlayerData[]): PlayerRoleData[];
 
   assignPoints(recipientSocketId: string, allPlayers: PlayerData[]): PlayerData;
   generateHiringList(players: PlayerData[]): HiringListEntry[];

@@ -108,15 +108,19 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
       const newRoles = game.gameMode.nextRound(game.players);
 
-      io.to(game.room).emit(
-        "updateCurrentInterviewee",
-        newRoles.interviewee.name
-      );
-      
-      io.to(game.room).emit(
-        "updateCurrentInterviewer",
-        newRoles.interviewer.name
-      );
+      newRoles.forEach((playerRole) => {
+        if (playerRole.role === "Interviewee") {
+          io.to(game.room).emit(
+            "updateCurrentInterviewee",
+            playerRole.player.name
+          );
+        } else if (playerRole.role === "Interviewer") {
+          io.to(game.room).emit(
+            "updateCurrentInterviewer",
+            playerRole.player.name
+          );
+        }
+      });
 
       const phraseCards = game.drawPhraseCards(cardsPerPlayer);
 
@@ -168,10 +172,13 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     socket.on("roundWinnerSelected", ({ roomNumber, winnerSocketId }) => {
       const game = getGame(roomNumber, Games);
 
-      const winningPlayer = game.gameMode.assignPoints(winnerSocketId, game.players);
+      const winningPlayer = game.gameMode.assignPoints(
+        winnerSocketId,
+        game.players
+      );
 
       if (winningPlayer == null) return;
-      
+
       io.to(winnerSocketId).emit("updatePlayerData", winningPlayer);
 
       const gameWinner = game.gameMode.checkForWinner(scoreToWin, game.players);
