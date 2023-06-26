@@ -1,5 +1,5 @@
 import PocketBase from "pocketbase";
-import Game from "@/Classes/Game/Game";
+import Game from "@/lib/Game/Game";
 import { Socket } from "socket.io";
 const pb = new PocketBase("http://127.0.0.1:8090");
 

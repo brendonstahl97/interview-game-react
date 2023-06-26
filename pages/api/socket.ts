@@ -1,5 +1,5 @@
 import { Server } from "socket.io";
-import Game from "@/Classes/Game/Game";
+import Game from "@/lib/Game/Game";
 import { GAME_PHASE } from "@/lib/enums";
 import {
   generateRoomNum,
