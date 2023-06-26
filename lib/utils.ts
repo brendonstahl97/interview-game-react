@@ -22,14 +22,15 @@ export const generateRoomNum = (games: Game[]): string => {
 
 export const checkIfRoomExists = (roomNum: string, games: Game[]) => {
   let roomExists = false;
-  if (games.length == 0) {
-    return roomExists;
-  }
+  if (games.length == 0) return roomExists;
+
   games.forEach((game) => {
     if (game.room == roomNum) {
       roomExists = true;
+      return roomExists;
     }
   });
+
   return roomExists;
 };
 
@@ -71,6 +72,7 @@ export const AddPlayerToGame = (
   return newPlayer;
 };
 
+// Move to seperate db related module
 export const getPhraseCards = async (): Promise<string[]> => {
   // Grab all phrase cards from PocketBase
   const phraseCardsRaw = await pb.collection("phrases").getFullList();
@@ -87,17 +89,22 @@ export const getJobCards = async (): Promise<string[]> => {
   return jobCards;
 };
 
-// Maybe Make this return the shuffled deck to be safe
-export const shuffle = (a: any[]) => {
+
+export const shuffle = (a: any[]): any[] => {
+  const shuffledArray: any[] = structuredClone(a);
+
   let j, x, i;
-  for (i = a.length - 1; i > 0; i--) {
+  for (i = shuffledArray.length - 1; i > 0; i--) {
     j = Math.floor(Math.random() * (i + 1));
-    x = a[i];
-    a[i] = a[j];
-    a[j] = x;
+    x = shuffledArray[i];
+    shuffledArray[i] = shuffledArray[j];
+    shuffledArray[j] = x;
   }
+
+  return shuffledArray;
 };
 
+// Move to games manager 
 export const removePlayerEntry = (game: Game, socketId: string) => {
   if (game) {
     const playerIndex = game.players.findIndex((player) => {
@@ -108,6 +115,7 @@ export const removePlayerEntry = (game: Game, socketId: string) => {
   }
 };
 
+// move to games Manager
 export const checkEmptyGames = (game: Game, gameIndex: number) => {
   if (game) {
     if (game.players.length < 1) {

@@ -75,6 +75,29 @@ export class InterviewGameMode implements GamemodeStrategy {
     };
   }
 
+  resetForRound(players: PlayerData[]): void {
+    players.forEach((player) => {
+      player.hasInterviewed = false;
+      player.interviewee = false;
+      player.interviewer = false;
+    });
+  }
+
+  fullPlayerReset(players: PlayerData[]): void {
+    this.resetForRound(players);
+    players.forEach((player) => {
+      player.points = 0;
+      player.hasBeenInterviewer = false;
+      player.hasSubmittedCards = false;
+    });
+  }
+
+  nextRound(players: PlayerData[]): void {
+        this.resetForRound(players);
+    const newRoles = this.assignNewRoles(players);
+    // return newRoles;
+  }
+
   assignPoints(
     recipientSocketId: string,
     allPlayers: PlayerData[]
@@ -84,5 +107,31 @@ export class InterviewGameMode implements GamemodeStrategy {
     );
     playerReceivingPoint.points++;
     return playerReceivingPoint;
+  }
+
+  generateHiringList(players: PlayerData[]): HiringListEntry[] {
+    const hiringList: HiringListEntry[] = [];
+
+    players.map((player) => {
+      if (!player.interviewee) return;
+      const applicantData = {
+        name: player.name,
+        socketId: player.socketId,
+      };
+
+      hiringList.push(applicantData);
+    });
+
+    return hiringList;
+  }
+
+  checkForWinner(scoreToWin: number, players: PlayerData[]): string {
+    let winner = null;
+    players.forEach((player) => {
+      if (player.points >= scoreToWin) {
+        winner = player.name;
+      }
+    });
+    return winner;
   }
 }

@@ -8,5 +8,12 @@ export interface GamemodeStrategy {
     interviewer: PlayerData;
     interviewee: PlayerData;
   };
+
+  resetForRound(players: PlayerData[]): void;
+  fullPlayerReset(players: PlayerData[]): void;
+  nextRound(players: PlayerData[]): void;
+
   assignPoints(recipientSocketId: string, allPlayers: PlayerData[]): PlayerData;
+  generateHiringList(players: PlayerData[]): HiringListEntry[];
+  checkForWinner(scoreToWin: number, players: PlayerData[]): string;
 }

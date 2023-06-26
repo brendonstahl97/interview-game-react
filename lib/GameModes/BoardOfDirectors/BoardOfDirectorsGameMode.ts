@@ -1,7 +1,8 @@
 import { GAME_MODE } from "@/lib/enums";
+import { InterviewGameMode } from "../InterviewGame/InterviewGameMode";
 import { GamemodeStrategy } from "../GameMode";
 
-export class BoardOfDirectorsGameMode implements GamemodeStrategy {
+export class BoardOfDirectorsGameMode extends InterviewGameMode implements GamemodeStrategy {
   Name: GAME_MODE.INTERVIEW_GAME;
   private voteCount = 0;
   private votes: { [key: string]: number } = {};

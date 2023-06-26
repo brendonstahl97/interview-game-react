@@ -46,9 +46,9 @@ export default class Game {
       (player: PlayerData) => player.ready == true
     );
 
-    if (readyPlayers.length == this.players.length && this.players.length > 1) {
+    if (readyPlayers.length == this.players.length && this.players.length > 1)
       return true;
-    }
+
     return false;
   };
 
@@ -64,28 +64,17 @@ export default class Game {
     this.phraseCardIndex = 0;
   };
 
-  resetForRound = () => {
-    this.players.forEach((player) => {
-      player.hasInterviewed = false;
-      player.interviewee = false;
-      player.interviewer = false;
-    });
-  };
+  // resetForRound = () => {
+    
+  // };
 
-  fullPlayerReset = () => {
-    this.resetForRound();
-    this.players.forEach((player) => {
-      player.points = 0;
-      player.hasBeenInterviewer = false;
-      player.hasSubmittedCards = false;
-    });
-  };
+  // fullPlayerReset = () => {
+    
+  // };
 
-  nextRound = () => {
-    this.resetForRound();
-    const newRoles = this.gameMode.assignNewRoles(this.players);
-    return newRoles;
-  };
+  // nextRound = () => {
+
+  // };
 
   // Submission Phase methods
   submitPlayerCards = (
@@ -129,7 +118,7 @@ export default class Game {
       // If the number of cards to draw exceeds the length of the deck
       if (endIndex >= this.phraseCards.length) {
         // Shuffle the deck
-        shuffle(this.phraseCards);
+        this.phraseCards = shuffle(this.phraseCards);
 
         // Determine how many cards are still needed
         const remainder = endIndex - this.phraseCards.length;
@@ -151,36 +140,9 @@ export default class Game {
     this.jobCardIndex++;
 
     if (this.jobCardIndex >= this.jobCards.length) {
-      shuffle(this.jobCards);
+      this.jobCards = shuffle(this.jobCards);
       this.jobCardIndex = 0;
     }
     return drawnCard;
-  };
-
-  // Hiring phase methods
-  generateHiringList = (): HiringListEntry[] => {
-    const hiringList: HiringListEntry[] = [];
-
-    this.players.map((player) => {
-      if (!player.interviewee) return;
-      const applicantData = {
-        name: player.name,
-        socketId: player.socketId,
-      };
-
-      hiringList.push(applicantData);
-    });
-
-    return hiringList;
-  };
-
-  checkForWinner = (scoreToWin: number): string => {
-    let winner = null;
-    this.players.forEach((player) => {
-      if (player.points >= scoreToWin) {
-        winner = player.name;
-      }
-    });
-    return winner;
   };
 }

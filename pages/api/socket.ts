@@ -100,13 +100,13 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     const DealPhase = (game: Game) => {
       io.to(game.room).emit("setGamePhase", GAME_PHASE.DEAL_PHASE);
 
-      shuffle(game.jobCards);
-      shuffle(game.phraseCards);
+      game.jobCards = shuffle(game.jobCards);
+      game.phraseCards = shuffle(game.phraseCards);
 
       const jobCard = game.drawJobCard();
       io.to(game.room).emit("updateCurrentJob", jobCard);
 
-      const newRoles = game.nextRound();
+      const newRoles = game.gameMode.nextRound(game.players);
 
       io.to(game.room).emit(
         "updateCurrentInterviewee",
@@ -157,7 +157,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
       io.to(roomNumber).emit("cardPlayed", "");
 
       if (!newInterviewee) {
-        const hiringList = game.generateHiringList();
+        const hiringList = game.gameMode.generateHiringList(game.players);
         io.to(roomNumber).emit("populateHiringList", hiringList);
         io.to(roomNumber).emit("setGamePhase", GAME_PHASE.EMPLOYMENT_PHASE);
       } else {
@@ -174,7 +174,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
       
       io.to(winnerSocketId).emit("updatePlayerData", winningPlayer);
 
-      const gameWinner = game.checkForWinner(scoreToWin);
+      const gameWinner = game.gameMode.checkForWinner(scoreToWin, game.players);
 
       if (gameWinner != null) {
         io.to(roomNumber).emit("setGameWinner", gameWinner);
@@ -186,7 +186,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
     socket.on("resetGame", ({ roomNumber, useNewCards }) => {
       const game = getGame(roomNumber, Games);
-      game.fullPlayerReset();
+      game.gameMode.fullPlayerReset(game.players);
 
       if (useNewCards) {
         game.setupDefaultCards(DefaultPhraseCards, DefaultJobCards);
