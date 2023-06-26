@@ -170,6 +170,8 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
       const winningPlayer = game.gameMode.assignPoints(winnerSocketId, game.players);
 
+      if (winningPlayer == null) return;
+      
       io.to(winnerSocketId).emit("updatePlayerData", winningPlayer);
 
       const gameWinner = game.checkForWinner(scoreToWin);

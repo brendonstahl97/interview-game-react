@@ -183,10 +183,4 @@ export default class Game {
     });
     return winner;
   };
-
-//   assignPoints = (winnerSocketId: string): PlayerData => {
-//     const playerReceivingPoint = this.players.find(player => player.socketId == winnerSocketId);
-//     playerReceivingPoint.points++;
-//     return playerReceivingPoint;
-//   }
 }

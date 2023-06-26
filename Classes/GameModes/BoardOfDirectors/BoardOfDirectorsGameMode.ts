@@ -3,6 +3,9 @@ import { GamemodeStrategy } from "../GameMode";
 
 export class BoardOfDirectorsGameMode implements GamemodeStrategy {
   Name: GAME_MODE.INTERVIEW_GAME;
+  private voteCount = 0;
+  private votes: { [key: string]: number } = {};
+
   chooseNext(availablePlayers: PlayerData[], allPlayers: PlayerData[]): number {
     if (availablePlayers.length <= 0) return null;
 
@@ -74,10 +77,38 @@ export class BoardOfDirectorsGameMode implements GamemodeStrategy {
     recipientSocketId: string,
     allPlayers: PlayerData[]
   ): PlayerData {
+    // Assign vote to socketID in votes object
+    this.votes[recipientSocketId] = this.votes[recipientSocketId]
+      ? this.votes[recipientSocketId] + 1
+      : 1;
+    this.voteCount++;
+
+    // Check if all players have voted
+    if (this.voteCount! >= allPlayers.length) return null;
+
+    let winningPlayerSocketId: string;
+    let highestVoteCount = 0;
+
+    // Determine which socketID has the most votes
+    Object.keys(this.votes).forEach((key) => {
+      if (this.votes[key] > highestVoteCount) {
+        highestVoteCount = this.votes.key;
+        winningPlayerSocketId = key;
+      }
+    });
+
+    // Get player from socketID
     const playerReceivingPoint = allPlayers.find(
-      (player) => player.socketId == recipientSocketId
+      (player) => player.socketId == winningPlayerSocketId
     );
-    playerReceivingPoint.points += 2;
+
+    // Give point
+    playerReceivingPoint.points += 1;
+
+    // Reinitialize voting variables
+    this.voteCount = 0;
+    this.votes = {};
+
     return playerReceivingPoint;
   }
 }
