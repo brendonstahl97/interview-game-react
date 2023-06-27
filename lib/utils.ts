@@ -34,6 +34,22 @@ export const checkIfRoomExists = (roomNum: string, games: Game[]) => {
   return roomExists;
 };
 
+export const shuffle = (a: any[]): any[] => {
+  const shuffledArray: any[] = structuredClone(a);
+
+  let j, x, i;
+  for (i = shuffledArray.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = shuffledArray[i];
+    shuffledArray[i] = shuffledArray[j];
+    shuffledArray[j] = x;
+  }
+
+  return shuffledArray;
+};
+
+// Impure functions below...be wary
+
 export const AddPlayerToGame = (
   games: Game[],
   socket: Socket,
@@ -87,21 +103,6 @@ export const getJobCards = async (): Promise<string[]> => {
   // Isolate card values
   const jobCards = jobCardsRaw.map((card) => card.value);
   return jobCards;
-};
-
-
-export const shuffle = (a: any[]): any[] => {
-  const shuffledArray: any[] = structuredClone(a);
-
-  let j, x, i;
-  for (i = shuffledArray.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    x = shuffledArray[i];
-    shuffledArray[i] = shuffledArray[j];
-    shuffledArray[j] = x;
-  }
-
-  return shuffledArray;
 };
 
 // Move to games manager 

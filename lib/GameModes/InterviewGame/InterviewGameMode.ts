@@ -1,5 +1,7 @@
 import { GAME_MODE } from "@/lib/enums";
 import { GamemodeStrategy } from "../GameMode";
+import { Server } from "socket.io";
+import Game from "@/lib/Game/Game";
 
 export class InterviewGameMode implements GamemodeStrategy {
   Name: GAME_MODE;
@@ -39,7 +41,7 @@ export class InterviewGameMode implements GamemodeStrategy {
     return null;
   }
 
-  nextInterviewer = (allPlayers: PlayerData[]) => {
+  getNextInterviewer = (allPlayers: PlayerData[]): PlayerData => {
     let availablePlayers = allPlayers.filter(
       (player) => !player.hasBeenInterviewer && !player.interviewee
     );
@@ -68,7 +70,7 @@ export class InterviewGameMode implements GamemodeStrategy {
   assignNewRoles(allPlayers: PlayerData[]): PlayerRoleData[] {
     return [
       {
-        player: this.nextInterviewer(allPlayers),
+        player: this.getNextInterviewer(allPlayers),
         role: "Interviewer",
       },
       {
@@ -95,10 +97,23 @@ export class InterviewGameMode implements GamemodeStrategy {
     });
   }
 
-  nextRound(players: PlayerData[]): PlayerRoleData[] {
+  nextRound(players: PlayerData[], io: Server, game: Game): void {
     this.resetForRound(players);
     const newRoles = this.assignNewRoles(players);
-    return newRoles;
+    
+    newRoles.forEach((playerRole) => {
+      if (playerRole.role === "Interviewee") {
+        io.to(game.room).emit(
+          "updateCurrentInterviewee",
+          playerRole.player.name
+        );
+      } else if (playerRole.role === "Interviewer") {
+        io.to(game.room).emit(
+          "updateCurrentInterviewer",
+          playerRole.player.name
+        );
+      }
+    });
   }
 
   assignPoints(

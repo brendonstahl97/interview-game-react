@@ -6,7 +6,6 @@ import {
   AddPlayerToGame,
   getJobCards,
   getPhraseCards,
-  shuffle,
   getGame,
 } from "@/lib/utils";
 
@@ -32,7 +31,7 @@ const Games: Game[] = [];
 let DefaultJobCards: string[] = [];
 let DefaultPhraseCards: string[] = [];
 const cardsPerPlayer = 5;
-const scoreToWin = 3;
+const scoreToWin = 1;
 
 const GetDefaultCards = async () => {
   DefaultJobCards = await getJobCards();
@@ -92,7 +91,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
     socket.on("startGame", (roomNumber) => {
       const game = getGame(roomNumber, Games);
-      game.setupDefaultCards(DefaultPhraseCards, DefaultJobCards);
+      game.deckManager.setupDefaultCards(DefaultPhraseCards, DefaultJobCards);
       io.to(roomNumber).emit("setGameMode", game.gameMode.Name);
       io.to(roomNumber).emit("setGamePhase", GAME_PHASE.SUBMISSION_PHASE);
     });
@@ -100,32 +99,23 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     const DealPhase = (game: Game) => {
       io.to(game.room).emit("setGamePhase", GAME_PHASE.DEAL_PHASE);
 
-      game.jobCards = shuffle(game.jobCards);
-      game.phraseCards = shuffle(game.phraseCards);
+      game.deckManager.shuffleDecks();
 
-      const jobCard = game.drawJobCard();
+      const jobCard = game.deckManager.drawJobCard();
       io.to(game.room).emit("updateCurrentJob", jobCard);
 
-      const newRoles = game.gameMode.nextRound(game.players);
+      game.gameMode.nextRound(game.players, io, game);
 
-      newRoles.forEach((playerRole) => {
-        if (playerRole.role === "Interviewee") {
-          io.to(game.room).emit(
-            "updateCurrentInterviewee",
-            playerRole.player.name
-          );
-        } else if (playerRole.role === "Interviewer") {
-          io.to(game.room).emit(
-            "updateCurrentInterviewer",
-            playerRole.player.name
-          );
+      const phraseCards = game.requestPhraseCards(cardsPerPlayer);
+
+      game.players.forEach((player: PlayerData) => {
+        if (!player.interviewer) {
+          if (phraseCards.length === 0)
+            throw new Error("Phrase Cards array is empty");
+
+          player.phraseCards = phraseCards.pop();
         }
-      });
 
-      const phraseCards = game.drawPhraseCards(cardsPerPlayer);
-
-      game.players.forEach((player: PlayerData, i: number) => {
-        player.phraseCards = phraseCards[i];
         io.to(player.socketId).emit("updatePlayerData", player);
       });
 
@@ -137,7 +127,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
       ({ socketId, roomNumber, jobs, phrases }) => {
         const gameSubmittedTo = getGame(roomNumber, Games);
 
-        gameSubmittedTo.submitPlayerCards(socketId, phrases, jobs);
+        gameSubmittedTo.HandlePlayerSubmission(socketId, phrases, jobs);
         const allPlayersSubmitted = gameSubmittedTo.checkAllPlayersSubmitted();
 
         if (!allPlayersSubmitted) return;
@@ -196,7 +186,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
       game.gameMode.fullPlayerReset(game.players);
 
       if (useNewCards) {
-        game.setupDefaultCards(DefaultPhraseCards, DefaultJobCards);
+        game.deckManager.setupDefaultCards(DefaultPhraseCards, DefaultJobCards);
         io.to(roomNumber).emit("resetSubmissionData");
         io.to(roomNumber).emit("setGamePhase", GAME_PHASE.SUBMISSION_PHASE);
       } else {

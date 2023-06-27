@@ -1,4 +1,6 @@
 import { GAME_MODE } from "@/lib/enums";
+import { Server } from "socket.io";
+import Game from "../Game/Game";
 
 export interface GamemodeStrategy {
   Name: GAME_MODE;
@@ -8,7 +10,7 @@ export interface GamemodeStrategy {
 
   resetForRound(players: PlayerData[]): void;
   fullPlayerReset(players: PlayerData[]): void;
-  nextRound(players: PlayerData[]): PlayerRoleData[];
+  nextRound(players: PlayerData[], io: Server, game: Game): void;
 
   assignPoints(recipientSocketId: string, allPlayers: PlayerData[]): PlayerData;
   generateHiringList(players: PlayerData[]): HiringListEntry[];

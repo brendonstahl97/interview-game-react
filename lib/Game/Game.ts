@@ -1,26 +1,22 @@
 import { findPlayerBySocketID, shuffle } from "@/lib/utils";
 import { GamemodeStrategy } from "../GameModes/GameMode";
 import { InterviewGameMode } from "../GameModes/InterviewGame/InterviewGameMode";
+import DeckManager from "./DeckManager";
+import { BoardOfDirectorsGameMode } from "../GameModes/BoardOfDirectors/BoardOfDirectorsGameMode";
 
 export default class Game {
   room: string;
   players: PlayerData[];
-  jobCards: string[];
-  phraseCards: string[];
-  jobCardIndex: number;
-  phraseCardIndex: number;
   canStart: boolean;
   gameMode: GamemodeStrategy;
+  deckManager: DeckManager;
 
   constructor(roomNumber: string) {
     this.room = roomNumber;
     this.players = [];
-    this.jobCards = [];
-    this.phraseCards = [];
-    this.jobCardIndex = 0;
-    this.phraseCardIndex = 0;
     this.canStart = false;
-    this.gameMode = new InterviewGameMode();
+    this.gameMode = new BoardOfDirectorsGameMode();
+    this.deckManager = new DeckManager();
   }
 
   // Ready Player Methods
@@ -52,40 +48,14 @@ export default class Game {
     return false;
   };
 
-  // Game Setup Methods
-  setupDefaultCards = (
-    defaultPhraseCards: string[],
-    defaultJobCards: string[]
-  ) => {
-    this.jobCards = structuredClone(defaultJobCards);
-    this.phraseCards = defaultPhraseCards;
-
-    this.jobCardIndex = 0;
-    this.phraseCardIndex = 0;
-  };
-
-  // resetForRound = () => {
-    
-  // };
-
-  // fullPlayerReset = () => {
-    
-  // };
-
-  // nextRound = () => {
-
-  // };
-
-  // Submission Phase methods
-  submitPlayerCards = (
+  HandlePlayerSubmission = (
     socketId: string,
     submittedPhraseCards: string[],
     submittedJobCards: string[]
   ) => {
-    this.jobCards.push(...submittedJobCards);
-    this.phraseCards.push(...submittedPhraseCards);
 
-    // This will need to be fixed for sure
+    this.deckManager.submitPlayerCards(submittedPhraseCards, submittedJobCards);
+
     const player = findPlayerBySocketID(socketId, this);
     player.hasSubmittedCards = true;
   };
@@ -102,47 +72,14 @@ export default class Game {
     return false;
   };
 
-  // Deal Phase methods
-  drawPhraseCards = (cardsPerPlayer: number) => {
-    // Create an array of empty arrays, one per player
-    let drawnPhaseCards = Array.from(Array(this.players.length - 1), () => []);
+  requestPhraseCards = (cardsPerPlayer: number): string[][] => {
+    const cardsToDeal: string[][] = []
 
-    // Draw Cards for each player
-    this.players.forEach((player, i) => {
-      const endIndex = this.phraseCardIndex + cardsPerPlayer;
-      const playerCards = this.phraseCards.slice(
-        this.phraseCardIndex,
-        endIndex
-      );
-
-      // If the number of cards to draw exceeds the length of the deck
-      if (endIndex >= this.phraseCards.length) {
-        // Shuffle the deck
-        this.phraseCards = shuffle(this.phraseCards);
-
-        // Determine how many cards are still needed
-        const remainder = endIndex - this.phraseCards.length;
-        const remainderCards = this.phraseCards.slice(0, remainder);
-
-        // Add those cards to the player's cards
-        playerCards.push(...remainderCards);
-        this.phraseCardIndex = remainder;
-      } else {
-        this.phraseCardIndex = this.phraseCardIndex + cardsPerPlayer;
-      }
-      drawnPhaseCards[i] = playerCards;
+    this.players.forEach(player => {
+      if(!player.interviewer)
+        cardsToDeal.push(this.deckManager.drawPhraseCards(cardsPerPlayer));
     });
-    return drawnPhaseCards;
-  };
 
-  drawJobCard = (): string => {
-    const drawnCard = this.jobCards[this.jobCardIndex];
-    this.jobCardIndex++;
-
-    if (this.jobCardIndex >= this.jobCards.length) {
-      this.jobCards = shuffle(this.jobCards);
-      this.jobCardIndex = 0;
-    }
-    return drawnCard;
-  };
+    return cardsToDeal;
+  } 
 }

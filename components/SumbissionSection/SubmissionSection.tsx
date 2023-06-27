@@ -8,8 +8,10 @@ const SubmissionSection = () => {
   const { state, dispatch } = useAppContext();
 
   const requiredCards = useRef({
-    job: state.ReadyPlayerData.length,
-    phrase: state.ReadyPlayerData.length * 2,
+    // job: state.ReadyPlayerData.length,
+    // phrase: state.ReadyPlayerData.length * 2,
+    job: 1,
+    phrase: 1
   });
 
   useEffect(() => {
