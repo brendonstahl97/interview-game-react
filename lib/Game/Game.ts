@@ -15,11 +15,10 @@ export default class Game {
     this.room = roomNumber;
     this.players = [];
     this.canStart = false;
-    this.gameMode = new BoardOfDirectorsGameMode();
+    this.gameMode = new InterviewGameMode();
     this.deckManager = new DeckManager();
   }
 
-  // Ready Player Methods
   updatePlayerList = () => {
     const playerReadyData = this.players.map((player) => {
       return { displayName: player.name, ready: player.ready };
@@ -53,7 +52,6 @@ export default class Game {
     submittedPhraseCards: string[],
     submittedJobCards: string[]
   ) => {
-
     this.deckManager.submitPlayerCards(submittedPhraseCards, submittedJobCards);
 
     const player = findPlayerBySocketID(socketId, this);
@@ -73,13 +71,13 @@ export default class Game {
   };
 
   requestPhraseCards = (cardsPerPlayer: number): string[][] => {
-    const cardsToDeal: string[][] = []
+    const cardsToDeal: string[][] = [];
 
-    this.players.forEach(player => {
-      if(!player.interviewer)
+    this.players.forEach((player) => {
+      if (!player.interviewer)
         cardsToDeal.push(this.deckManager.drawPhraseCards(cardsPerPlayer));
     });
 
     return cardsToDeal;
-  } 
+  };
 }

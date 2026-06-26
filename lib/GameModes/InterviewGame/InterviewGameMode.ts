@@ -26,6 +26,10 @@ export class InterviewGameMode implements GamemodeStrategy {
   }
 
   nextInterviewee(allPlayers: PlayerData[]): PlayerData {
+    allPlayers.forEach((player) => {
+      player.interviewee = false;
+    });
+
     const availablePlayers = allPlayers.filter(
       (player) => !player.hasInterviewed && !player.interviewer
     );
@@ -100,7 +104,7 @@ export class InterviewGameMode implements GamemodeStrategy {
   nextRound(players: PlayerData[], io: Server, game: Game): void {
     this.resetForRound(players);
     const newRoles = this.assignNewRoles(players);
-    
+
     newRoles.forEach((playerRole) => {
       if (playerRole.role === "Interviewee") {
         io.to(game.room).emit(
@@ -131,7 +135,7 @@ export class InterviewGameMode implements GamemodeStrategy {
     const hiringList: HiringListEntry[] = [];
 
     players.map((player) => {
-      if (!player.interviewee) return;
+      if (!player.hasInterviewed) return;
       const applicantData = {
         name: player.name,
         socketId: player.socketId,

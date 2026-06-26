@@ -5,7 +5,17 @@ import { Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 export class BoardOfDirectorsGameMode implements GamemodeStrategy {
+  Name: GAME_MODE;
+  private voteCount = 0;
+  private votes: { [key: string]: number } = {};
+
+  constructor() {
+    this.Name = GAME_MODE.BOARD_OF_DIRECTORS;
+  }
+
   resetForRound(players: PlayerData[]): void {
+    this.votes = {};
+    this.voteCount = 0;
     players.forEach((player) => {
       player.hasInterviewed = false;
       player.interviewee = false;
@@ -49,7 +59,7 @@ export class BoardOfDirectorsGameMode implements GamemodeStrategy {
     const hiringList: HiringListEntry[] = [];
 
     players.map((player) => {
-      if (!player.interviewee) return;
+      if (!player.hasInterviewed) return;
       const applicantData = {
         name: player.name,
         socketId: player.socketId,
@@ -71,10 +81,6 @@ export class BoardOfDirectorsGameMode implements GamemodeStrategy {
     return winner;
   }
 
-  Name: GAME_MODE.INTERVIEW_GAME;
-  private voteCount = 0;
-  private votes: { [key: string]: number } = {};
-
   chooseNext(availablePlayers: PlayerData[], allPlayers: PlayerData[]): number {
     if (availablePlayers.length <= 0) return null;
 
@@ -91,6 +97,10 @@ export class BoardOfDirectorsGameMode implements GamemodeStrategy {
   }
 
   nextInterviewee(allPlayers: PlayerData[]): PlayerData {
+    allPlayers.forEach((player) => {
+      player.interviewee = false;
+    });
+
     const availablePlayers = allPlayers.filter(
       (player) => !player.hasInterviewed && !player.interviewer
     );
