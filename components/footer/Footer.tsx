@@ -9,7 +9,7 @@ const Footer = () => {
           <br />
           Converted to Nextjs and Updated by Brendon Stahl
           <br />
-          Copyright &copy; Brendon Stahl 2023
+          Copyright &copy; Brendon Stahl 2026
         </p>
       </div>
     </footer>

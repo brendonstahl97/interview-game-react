@@ -34,8 +34,8 @@ const cardsPerPlayer = 5;
 const scoreToWin = 1;
 
 const GetDefaultCards = async () => {
-  DefaultJobCards = await getJobCards();
-  DefaultPhraseCards = await getPhraseCards();
+  DefaultJobCards = getJobCards();
+  DefaultPhraseCards = getPhraseCards();
 };
 
 GetDefaultCards();
@@ -49,7 +49,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
   console.log("Socket is initializing");
   const io = new Server<ClientToServerEvents, ServerToClientEvents>(
-    res.socket.server
+    res.socket.server,
   );
   res.socket.server.io = io;
 
@@ -133,7 +133,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
         if (!allPlayersSubmitted) return;
 
         DealPhase(gameSubmittedTo);
-      }
+      },
     );
 
     socket.on("playCard", ({ cardText, roomNumber }) => {
@@ -164,7 +164,7 @@ const handler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
       const winningPlayer = game.gameMode.assignPoints(
         winnerSocketId,
-        game.players
+        game.players,
       );
 
       if (winningPlayer == null) return;

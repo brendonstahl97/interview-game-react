@@ -1,6 +1,8 @@
 import PocketBase from "pocketbase";
 import Game from "@/lib/Game/Game";
 import { Socket } from "socket.io";
+import csvParser from "csv-parser";
+import fs from "fs";
 const pb = new PocketBase("http://127.0.0.1:8090");
 
 export const getGame = (roomNum: string, games: Game[]): Game => {
@@ -54,7 +56,7 @@ export const AddPlayerToGame = (
   games: Game[],
   socket: Socket,
   roomNum: string,
-  displayName: string
+  displayName: string,
 ): PlayerData => {
   // Create new player object
   // First player defaults to interviewer
@@ -89,23 +91,27 @@ export const AddPlayerToGame = (
 };
 
 // Move to seperate db related module
-export const getPhraseCards = async (): Promise<string[]> => {
-  // Grab all phrase cards from PocketBase
-  const phraseCardsRaw = await pb.collection("phrases").getFullList();
-  // Isolate card values
-  const phraseCards = phraseCardsRaw.map((card) => card.value);
+export const getPhraseCards = (): string[] => {
+  const phraseCards: string[] = [];
+  fs.createReadStream("default_data/phrases.csv")
+    .pipe(csvParser())
+    .on("data", (data) => {
+      phraseCards.push(JSON.stringify(data.value).replaceAll('"', ""));
+    });
   return phraseCards;
 };
 
-export const getJobCards = async (): Promise<string[]> => {
-  // Grab all phrase cards from PocketBase
-  const jobCardsRaw = await pb.collection("jobs").getFullList();
-  // Isolate card values
-  const jobCards = jobCardsRaw.map((card) => card.value);
+export const getJobCards = (): string[] => {
+  const jobCards: string[] = [];
+  fs.createReadStream("default_data/jobs.csv")
+    .pipe(csvParser())
+    .on("data", (data) => {
+      jobCards.push(JSON.stringify(data.value).replaceAll('"', ""));
+    });
   return jobCards;
 };
 
-// Move to games manager 
+// Move to games manager
 export const removePlayerEntry = (game: Game, socketId: string) => {
   if (game) {
     const playerIndex = game.players.findIndex((player) => {

@@ -13,6 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "bootstrap": "^5.2.3",
+    "csv-parser": "^3.2.1",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "next": "16.2.9",
