@@ -1,7 +1,7 @@
 import { MouseEvent } from "react";
 
-type EndTurnCardProps = { 
-  handleEndTurn: (e: MouseEvent<HTMLButtonElement>) => void
+type EndTurnCardProps = {
+  handleEndTurn: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
 const EndTurnCard = ({ handleEndTurn }: EndTurnCardProps) => {
