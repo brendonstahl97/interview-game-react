@@ -2,7 +2,7 @@ import { GAME_MODE } from "@/lib/enums";
 import { GamemodeStrategy } from "../GameMode";
 import Game from "@/lib/Game/Game";
 import { Server } from "socket.io";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { DefaultEventsMap } from "socket.io";
 
 export class BoardOfDirectorsGameMode implements GamemodeStrategy {
   Name: GAME_MODE;
